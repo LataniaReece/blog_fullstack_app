@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import express, { Application } from "express";
+import cors from "cors";
 import globalErrorHandler from "./middleware/globalErrorHandler";
 import routes from "./routes";
 
@@ -11,6 +12,7 @@ const MODE: string = process.env.NODE_ENV
   ? process.env.NODE_ENV
   : "development";
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
