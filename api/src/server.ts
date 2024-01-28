@@ -28,8 +28,8 @@ app
   });
 
 // Routes
-app.use("/auth", routes.userRoutes);
-app.use("/api", routes.blogRoutes);
+app.use("/api/auth", routes.userRoutes);
+app.use("/api/blogs", routes.blogRoutes);
 
 app.use(globalErrorHandler);
 

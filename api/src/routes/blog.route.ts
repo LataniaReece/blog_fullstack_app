@@ -6,16 +6,12 @@ import { validateAuthenticated } from "../middleware/auth";
 
 const router = Router();
 
-router.get("/blogs", BlogController.getAllBlogs);
-router.get("/blogs/:id", BlogController.getBlogById);
-router.get(
-  "/blogs/user/:userId",
-  validateAuthenticated,
-  BlogController.getUserBlogs
-);
+router.get("/", BlogController.getAllBlogs);
+router.get("/:id", BlogController.getBlogById);
+router.get("/user/:userId", validateAuthenticated, BlogController.getUserBlogs);
 
 router.post(
-  "/blogs",
+  "/",
   validateAuthenticated,
   [
     body("title").notEmpty().withMessage("Title is required"),
@@ -27,7 +23,7 @@ router.post(
 );
 
 router.put(
-  "/blogs/:id",
+  "/:id",
   validateAuthenticated,
   [
     body("title").notEmpty().withMessage("Title is required"),
@@ -38,6 +34,6 @@ router.put(
   BlogController.updateBlog
 );
 
-router.delete("/blogs/:id", validateAuthenticated, BlogController.deleteBlog);
+router.delete("/:id", validateAuthenticated, BlogController.deleteBlog);
 
 export default router;
