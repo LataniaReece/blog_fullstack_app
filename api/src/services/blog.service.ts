@@ -12,7 +12,6 @@ interface UpdateBlogInput extends BlogInput {
 }
 
 export const getBlogs = async () => {
-  console.log("helo");
   const blogs = await prisma.blog.findMany();
   return { blogs };
 };
