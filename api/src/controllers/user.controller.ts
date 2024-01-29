@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
 
 import * as UserService from "../services/user.service";
-import { CustomError } from "../utils/CustomError";
 import asyncErrorHandler from "../utils/asyncErrorHandler";
-import prisma from "../utils/db";
 
 export const createUser = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +11,15 @@ export const createUser = asyncErrorHandler(
       password,
     });
 
-    res.status(201).json({ user, accessToken, refreshToken });
+    // Set the refresh token as an HttpOnly cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json({ user, accessToken });
   }
 );
 
@@ -26,13 +31,21 @@ export const login = asyncErrorHandler(
       password,
     });
 
-    res.json({ user, accessToken, refreshToken });
+    // Set the refresh token as an HttpOnly cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.json({ user, accessToken });
   }
 );
 
 export const refreshToken = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const providedRefreshToken = req.body.refreshToken;
+    const providedRefreshToken = req.cookies.refreshToken;
     const { accessToken } = await UserService.refreshToken(
       providedRefreshToken
     );

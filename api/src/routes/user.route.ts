@@ -25,11 +25,6 @@ router.post(
   UserController.login
 );
 
-router.post(
-  "/refresh-token",
-  body("refreshToken").notEmpty().withMessage("Refresh token is required"),
-  validateRequest,
-  UserController.refreshToken
-);
+router.post("/refresh-token", UserController.refreshToken);
 
 export default router;

@@ -24,6 +24,12 @@ export const createUser = async ({ username, password }: UserCreateInput) => {
 
   const { accessToken, refreshToken } = createJWT(user.id);
 
+  // Store the refresh token in the database
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { refreshToken, refreshTokenIssuedAt: new Date() },
+  });
+
   return { user, accessToken, refreshToken };
 };
 
