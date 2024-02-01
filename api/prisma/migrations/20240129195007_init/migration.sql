@@ -4,6 +4,8 @@ CREATE TABLE "User" (
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "avatar" TEXT,
+    "refreshToken" TEXT,
+    "refreshTokenIssuedAt" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

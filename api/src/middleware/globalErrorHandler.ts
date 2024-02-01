@@ -54,9 +54,7 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  if (process.env.NODE_ENV === "development") {
-    devErrors(res, error);
-  } else if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production") {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         error = duplicateKeyErrorHandler(error);
@@ -64,8 +62,9 @@ const globalErrorHandler = (
         error = recordNotFoundErrorHandler(error);
       }
     }
-
     prodErrors(res, error);
+  } else {
+    devErrors(res, error);
   }
 };
 export default globalErrorHandler;

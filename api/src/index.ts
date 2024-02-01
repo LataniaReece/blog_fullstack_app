@@ -1,22 +1,14 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import express, { Application } from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import globalErrorHandler from "./middleware/globalErrorHandler";
-import routes from "./routes";
+import createServer from "./app";
 
-const app: Application = express();
 const PORT: number = process.env.PORT ? +process.env.PORT : 8000;
 const MODE: string = process.env.NODE_ENV
   ? process.env.NODE_ENV
   : "development";
 
-app.use(cors());
-app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const app = createServer();
 
 app
   .listen(PORT, function () {
@@ -30,11 +22,5 @@ app
       console.log(err);
     }
   });
-
-// Routes
-app.use("/api/auth", routes.userRoutes);
-app.use("/api/blogs", routes.blogRoutes);
-
-app.use(globalErrorHandler);
 
 export default app;
