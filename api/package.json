@@ -8,7 +8,9 @@
     "start:dev": "nodemon --files src/index.ts",
     "start:prod": "cross-env NODE_ENV=production node dist/index.ts",
     "migrate": "npx prisma migrate dev --name",
-    "test": "dotenv -e .env.test jest"
+    "test": "dotenv -e .env.test jest",
+    "db:seed": "ts-node prisma/seedDB.ts",
+    "db:clear": "ts-node prisma/clearDB.ts"
   },
   "keywords": [],
   "author": "",
