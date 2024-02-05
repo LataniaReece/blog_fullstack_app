@@ -7,6 +7,7 @@ import { validateAuthenticated } from "../middleware/auth";
 const router = Router();
 
 router.get("/", BlogController.getAllBlogs);
+router.get("/featured", BlogController.getFeaturedBlogs);
 router.get("/:id", BlogController.getBlogById);
 router.get("/user/:userId", validateAuthenticated, BlogController.getUserBlogs);
 

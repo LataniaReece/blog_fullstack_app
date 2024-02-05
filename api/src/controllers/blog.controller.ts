@@ -11,6 +11,14 @@ export const getAllBlogs = asyncErrorHandler(
   }
 );
 
+// Get featured blogs
+export const getFeaturedBlogs = asyncErrorHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { blogs } = await BlogService.getFeaturedBlogs();
+    res.status(200).json({ blogs });
+  }
+);
+
 // Get blogs for a specific user
 export const getUserBlogs = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {

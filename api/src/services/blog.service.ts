@@ -16,6 +16,11 @@ export const getBlogs = async () => {
   return { blogs };
 };
 
+export const getFeaturedBlogs = async () => {
+  const blogs = await prisma.blog.findMany({ where: { featured: true } });
+  return { blogs };
+};
+
 export const getUserBlogs = async (userId: string) => {
   const blogs = await prisma.blog.findMany({
     where: {
