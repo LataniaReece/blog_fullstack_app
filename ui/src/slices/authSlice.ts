@@ -16,7 +16,7 @@ const initialState: InitialState = {
   accessToken: localStorage.getItem("accessToken") || null,
   id: null,
   username: null,
-  isLoggedIn: false,
+  isLoggedIn: !!localStorage.getItem("accessToken"),
 };
 
 const authSlice = createSlice({
@@ -28,7 +28,8 @@ const authSlice = createSlice({
       state.username = null;
       state.id = null;
       state.isLoggedIn = false;
-      window.location.replace("/");
+      state.accessToken = null;
+      localStorage.removeItem("accessToken");
     },
     clearAccessToken: (state) => {
       state.accessToken = null;
@@ -67,5 +68,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearAccessToken } = authSlice.actions;
+export const { clearAccessToken, logUserOut } = authSlice.actions;
 export default authSlice.reducer;

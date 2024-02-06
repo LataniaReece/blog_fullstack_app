@@ -1,21 +1,16 @@
 import { FC, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import classNames from "classnames";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { SplitScreenLayout } from "../components/layouts/SplitScreenLayout";
-import { useLoginUserMutation } from "../services/blogApi";
-import logo from "../images/Logo.png";
-import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import logo from "../images/Logo.png";
+import { useCreateUserMutation } from "../services/blogApi";
 import { extractErrorMessage } from "../utils/errorUtils";
 import ButtonSpinner from "../components/ButtonSpinner";
-
-interface LoginValues {
-  username: string;
-  password: string;
-}
 
 const inputStyle = (hasError: boolean) =>
   classNames(
@@ -28,13 +23,13 @@ const inputStyle = (hasError: boolean) =>
 
 const errorMessageStyle = "text-md text-red-700 mt-1 pl-3";
 
-const Login: FC = () => {
+const Register: FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const [loginUser, { isLoading, isSuccess, isError, error }] =
-    useLoginUserMutation();
+  const [registerUser, { isLoading, isError, error, isSuccess }] =
+    useCreateUserMutation();
 
   const navigate = useNavigate();
+
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
@@ -43,35 +38,37 @@ const Login: FC = () => {
     }
   }, [isLoggedIn, isSuccess, navigate]);
 
-  const errorMessage: string = isError ? extractErrorMessage(error) : "";
-
-  const handleLogin = (values: LoginValues) => {
-    loginUser(values);
-  };
-
   const formik = useFormik({
     initialValues: {
       username: "",
-      password: "",
+      password1: "",
+      password2: "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is required"),
-      password: Yup.string().required("Password is required"),
+      password1: Yup.string().required("Password is required"),
+      password2: Yup.string()
+        .oneOf([Yup.ref("password1")], "Passwords must match")
+        .required("Confirm password is required"),
     }),
     onSubmit: (values) => {
-      handleLogin(values);
+      registerUser({ username: values.username, password: values.password1 });
     },
   });
+
+  const errorMessage = isError ? extractErrorMessage(error) : "";
 
   return (
     <SplitScreenLayout>
       <div className="flex flex-col justify-between h-full">
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center gap-3">
-            <img src={logo} alt="" className="w-20 rounded-full" />
-            <p className="text-3xl">Login</p>
-            <p className="text-lg text-slate-500">Welcome back!</p>
+            <img src={logo} alt="Logo" className="w-20 rounded-full" />
+            <p className="text-3xl">Register</p>
+            <p className="text-lg text-slate-500">Join our community!</p>
           </div>
+
+          {/* Username Field */}
           <div>
             <input
               type="text"
@@ -87,15 +84,17 @@ const Login: FC = () => {
               <p className={errorMessageStyle}>{formik.errors.username}</p>
             )}
           </div>
+
+          {/* Password Field */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
-              name="password"
+              name="password1"
               placeholder="Password"
               onChange={formik.handleChange}
-              value={formik.values.password}
+              value={formik.values.password1}
               className={inputStyle(
-                !!formik.errors.password && !!formik.touched.password
+                !!formik.errors.password1 && !!formik.touched.password1
               )}
             />
             <button
@@ -105,25 +104,41 @@ const Login: FC = () => {
             >
               {showPassword ? "Hide" : "Show"}
             </button>
-            {formik.errors.password && formik.touched.password && (
-              <p className={errorMessageStyle}>{formik.errors.password}</p>
+            {formik.errors.password1 && formik.touched.password1 && (
+              <p className={errorMessageStyle}>{formik.errors.password1}</p>
+            )}
+          </div>
+
+          {/* Confirm Password Field */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password2"
+              placeholder="Confirm Password"
+              onChange={formik.handleChange}
+              value={formik.values.password2}
+              className={inputStyle(
+                !!formik.errors.password2 && !!formik.touched.password2
+              )}
+            />
+            {formik.errors.password2 && formik.touched.password2 && (
+              <p className={errorMessageStyle}>{formik.errors.password2}</p>
             )}
           </div>
 
           <p className="text-center">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-[#457E86] hover:underline">
-              Sign Up
+            Already have an account?{" "}
+            <Link to="/login" className="text-[#457E86] hover:underline">
+              Login
             </Link>
           </p>
+
           {errorMessage && (
-            <div
-              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-              role="alert"
-            >
+            <div className={errorMessageStyle} role="alert">
               <p>{errorMessage}</p>
             </div>
           )}
+
           <button
             type="submit"
             disabled={isLoading}
@@ -135,11 +150,12 @@ const Login: FC = () => {
               }
             )}
           >
-            {isLoading ? <ButtonSpinner /> : "Login"}
+            {isLoading ? <ButtonSpinner /> : "Register"}
           </button>
         </form>
       </div>
     </SplitScreenLayout>
   );
 };
-export default Login;
+
+export default Register;

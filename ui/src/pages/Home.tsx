@@ -1,23 +1,7 @@
-import { useGetBlogsQuery } from "../services/blogApi";
+import { FC } from "react";
+import Hero from "../components/Home/Hero";
 
-const Home = () => {
-  const { data, isLoading } = useGetBlogsQuery();
-
-  const blogsData = data?.blogs;
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  return (
-    blogsData &&
-    blogsData.map((blog) => {
-      return (
-        <div>
-          <p>{blog.title}</p>
-        </div>
-      );
-    })
-  );
+const Home: FC = () => {
+  return <Hero />;
 };
 export default Home;

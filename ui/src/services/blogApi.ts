@@ -5,26 +5,29 @@ export const enhancedApi = blogApi.injectEndpoints({
   endpoints: (builder) => ({
     createUser: builder.mutation<AuthResponse, UserCredentials>({
       query: (newUser) => ({
-        url: "/register",
+        url: "/auth/register",
         method: "POST",
         body: newUser,
       }),
     }),
     loginUser: builder.mutation<AuthResponse, UserCredentials>({
       query: (loginUser) => ({
-        url: "/login",
+        url: "/auth/login",
         method: "POST",
         body: loginUser,
       }),
     }),
     refreshToken: builder.mutation<RefreshTokenResponse, void>({
       query: () => ({
-        url: "/refresh-token",
+        url: "/auth/refresh-token",
         method: "POST",
       }),
     }),
     getBlogs: builder.query<BlogsResponse, void>({
       query: () => ({ url: "/blogs" }),
+    }),
+    getFeaturedBlogs: builder.query<BlogsResponse, void>({
+      query: () => ({ url: "/blogs/featured" }),
     }),
     getBlogById: builder.query<BlogResponse, BlogByIdArg>({
       query: (id) => ({ url: `/blogs/${id}` }),
@@ -99,6 +102,7 @@ export const {
   useLoginUserMutation,
   useRefreshTokenMutation,
   useGetBlogsQuery,
+  useGetFeaturedBlogsQuery,
   useGetBlogByIdQuery,
   useGetUserBlogsQuery,
   useCreateBlogMutation,

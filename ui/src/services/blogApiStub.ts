@@ -3,6 +3,7 @@ import {
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
+import { logUserOut } from "../slices/authSlice";
 
 const refreshAccessToken = async () => {
   try {
@@ -23,13 +24,12 @@ const refreshAccessToken = async () => {
       localStorage.setItem("accessToken", data.accessToken);
       return data.accessToken;
     } else {
-      //todo: dispatch(logUserOut)
-      // Handle the scenario where the refresh token is invalid or expired
-      throw new Error("Failed to refresh token");
+      console.error("Failed to refresh token");
+      return null;
     }
   } catch (error) {
     console.error("Error refreshing access token:", error);
-    // Handle error appropriately (e.g., redirect to login page)
+    return null;
   }
 };
 
@@ -50,8 +50,19 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
     // Token is expired, attempt to refresh
     const newToken = await refreshAccessToken();
     if (newToken) {
+      // Update the authorization header with the new token
+      const modifiedArgs = {
+        ...args,
+        headers: {
+          ...args.headers,
+          authorization: `Bearer ${newToken}`,
+        },
+      };
       // Retry the original query with the new token
-      result = await baseQuery(args, api, extraOptions); // Pass extraOptions again
+      result = await baseQuery(modifiedArgs, api, extraOptions);
+    } else {
+      api.dispatch(logUserOut());
+      window.location.href = "/login";
     }
   }
   return result;
