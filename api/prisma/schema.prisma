@@ -27,4 +27,5 @@ model Blog {
   authorId   String
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   categories String[]
+  imageUrl   String? 
 }

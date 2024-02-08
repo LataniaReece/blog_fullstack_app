@@ -1,8 +1,12 @@
 import { Router } from "express";
 import * as BlogController from "../controllers/blog.controller";
 import { body } from "express-validator";
+import multer from "multer";
 import { validateRequest } from "../middleware/validateRequest";
 import { validateAuthenticated } from "../middleware/auth";
+
+import { storage } from "../utils/cloudinary";
+const upload = multer({ storage });
 
 const router = Router();
 
@@ -14,6 +18,7 @@ router.get("/user/:userId", validateAuthenticated, BlogController.getUserBlogs);
 router.post(
   "/",
   validateAuthenticated,
+  upload.single("image"),
   [
     body("title").notEmpty().withMessage("Title is required"),
     body("content").notEmpty().withMessage("Content is required"),
@@ -26,6 +31,7 @@ router.post(
 router.put(
   "/:id",
   validateAuthenticated,
+  upload.single("image"),
   [
     body("title").notEmpty().withMessage("Title is required"),
     body("content").notEmpty().withMessage("Content is required"),

@@ -46,6 +46,8 @@ export const getBlogById = asyncErrorHandler(
 export const createBlog = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { title, content, categories } = req.body;
+    const imageUrl = req.file ? req.file.path : null;
+
     if (!req.user) {
       const err = new CustomError("User is not authenticated", 401);
       return next(err);
@@ -56,6 +58,7 @@ export const createBlog = asyncErrorHandler(
       content,
       categories,
       authorId,
+      imageUrl,
     });
     res.status(201).json({ blog });
   }
@@ -66,6 +69,8 @@ export const updateBlog = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const blogId = req.params.id;
     const { title, content, categories } = req.body;
+    const imageUrl = req.file ? req.file.path : null;
+
     if (!req.user) {
       const err = new CustomError("User is not authenticated", 401);
       return next(err);
@@ -76,6 +81,7 @@ export const updateBlog = asyncErrorHandler(
       content,
       categories,
       authorId: req.user.id,
+      imageUrl,
     });
     res.status(200).json({ blog });
   }

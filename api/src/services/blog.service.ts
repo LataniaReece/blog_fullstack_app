@@ -5,6 +5,7 @@ interface BlogInput {
   content: string;
   categories: string[];
   authorId: string;
+  imageUrl: string | null;
 }
 
 interface UpdateBlogInput extends BlogInput {
@@ -41,12 +42,14 @@ export const createBlog = async ({
   content,
   categories,
   authorId,
+  imageUrl,
 }: BlogInput) => {
   const blog = await prisma.blog.create({
     data: {
       title,
       content,
       categories,
+      imageUrl,
       author: {
         connect: { id: authorId },
       },
@@ -61,6 +64,7 @@ export const updateBlog = async ({
   title,
   content,
   categories,
+  imageUrl,
 }: UpdateBlogInput) => {
   const blog = await prisma.blog.update({
     where: { id },
@@ -68,6 +72,7 @@ export const updateBlog = async ({
       title,
       content,
       categories,
+      imageUrl,
     },
   });
 
