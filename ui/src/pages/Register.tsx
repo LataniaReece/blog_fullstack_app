@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 import { SplitScreenLayout } from "../components/layouts/SplitScreenLayout";
 import { RootState } from "../store";
-import logo from "../images/Logo.png";
+import logo from "../images/logo-black.png";
 import { useCreateUserMutation } from "../services/blogApi";
 import { extractErrorMessage } from "../utils/errorUtils";
 import ButtonSpinner from "../components/ButtonSpinner";
@@ -126,12 +126,20 @@ const Register: FC = () => {
             )}
           </div>
 
-          <p className="text-center">
-            Already have an account?{" "}
-            <Link to="/login" className="text-[#457E86] hover:underline">
-              Login
+          <div className="flex flex-col justify-between text-center sm:flex-row ">
+            <p>
+              Already have an account?{" "}
+              <Link to="/login" className="text-[#457E86] hover:underline">
+                Login
+              </Link>
+            </p>
+            <Link
+              to="/"
+              className="underline hover:no-underline hover:text-[#457E86]"
+            >
+              Go back to blogs
             </Link>
-          </p>
+          </div>
 
           {errorMessage && (
             <div className={errorMessageStyle} role="alert">

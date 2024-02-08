@@ -1,32 +1,23 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../store";
 import { logUserOut } from "../slices/authSlice";
 
+import logo from "../images/logo-white.png";
+
 const Navbar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { isLoggedIn, username } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
   const handleLogout = () => {
     dispatch(logUserOut());
   };
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login", { replace: true });
-    }
-  }, [isLoggedIn, navigate]);
-
-  const userInitial = username?.[0]?.toUpperCase() || "B";
 
   const navVariants = {
     open: { opacity: 1, x: 0 },
@@ -38,29 +29,27 @@ const Navbar: FC = () => {
       {/* Desktop Menu */}
       <div className="hidden md:flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <div className="bg-red-500 h-8 w-8 rounded-full flex items-center justify-center text-xl font-bold">
-            {userInitial}
-          </div>
-          <a href="/my-blogs" className="hover:underline">
-            My Blogs
-          </a>
+          <Link to="/" className="hover:underline flex items-center gap-2">
+            <img src={logo} className="h-8 w-8 rounded-full" />
+            Lifestyle Blogs
+          </Link>
         </div>
         <div className="flex space-x-4">
           {isLoggedIn ? (
             <>
               <button onClick={() => handleLogout()}>Logout</button>
-              <a href="/account" className="hover:underline">
+              <Link to="/account" className="hover:underline">
                 My Account
-              </a>
+              </Link>
             </>
           ) : (
             <>
-              <a href="/login" className="hover:underline">
+              <Link to="/login" className="hover:underline">
                 Login
-              </a>
-              <a href="/register" className="hover:underline">
+              </Link>
+              <Link to="/register" className="hover:underline">
                 Register
-              </a>
+              </Link>
             </>
           )}
         </div>
@@ -68,9 +57,10 @@ const Navbar: FC = () => {
 
       {/* Mobile Menu */}
       <div className="md:hidden flex justify-between items-center">
-        <div className="bg-red-500 h-8 w-8 rounded-full flex items-center justify-center text-xl font-bold">
-          L
-        </div>
+        <Link to="/" className="hover:underline flex items-center gap-2">
+          <img src={logo} className="h-8 w-8 rounded-full" />
+          Lifestyle Blogs
+        </Link>
         <button onClick={() => setIsOpen(!isOpen)}>
           {/* Hamburger Icon */}
           <div className="flex flex-col space-y-1">
@@ -90,30 +80,33 @@ const Navbar: FC = () => {
             variants={navVariants}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
-            <button
-              className="absolute top-4 right-4 text-white outline-none"
-              onClick={() => setIsOpen(false)}
-            >
-              <FaTimes size={24} />
-            </button>
-            <a href="/my-blogs" className="hover:underline">
-              My Blogs
-            </a>
+            <div className="absolute top-0 flex justify-between w-full p-3">
+              <Link to="/" className="hover:underline flex items-center gap-2">
+                <img src={logo} className="h-8 w-8 rounded-full" />
+                Lifestyle Blogs
+              </Link>
+              <button
+                className=" text-white outline-none"
+                onClick={() => setIsOpen(false)}
+              >
+                <FaTimes size={24} />
+              </button>
+            </div>
             {isLoggedIn ? (
               <>
                 <button onClick={() => handleLogout()}>Logout</button>
-                <a href="/account" className="hover:underline">
+                <Link to="/account" className="hover:underline">
                   My Account
-                </a>
+                </Link>
               </>
             ) : (
               <>
-                <a href="/login" className="hover:underline">
+                <Link to="/login" className="hover:underline">
                   Login
-                </a>
-                <a href="/register" className="hover:underline">
+                </Link>
+                <Link to="/register" className="hover:underline">
                   Register
-                </a>
+                </Link>
               </>
             )}
           </motion.div>

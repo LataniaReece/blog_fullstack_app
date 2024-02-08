@@ -1,12 +1,14 @@
-import { Component, FC, ReactElement, ReactNode, Suspense, lazy } from "react";
+import { FC, ReactElement, ReactNode, Suspense, lazy } from "react";
 import { Navigate, Route, Routes as RouterRoutes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
+import BlogDetail from "./components/BlogDetail";
 
 const Login = lazy(() => import("./pages/Login"));
 const Home = lazy(() => import("./pages/Home"));
+const MyAccount = lazy(() => import("./pages/MyAccount"));
 
 interface LayoutProps {
   children: ReactNode;
@@ -57,13 +59,29 @@ const Routes: FC = () => {
           }
         />
         <Route
-          path="/"
+          path="/account"
           element={
             <AuthRoute>
               <MainLayout>
-                <Home />
+                <MyAccount />
               </MainLayout>
             </AuthRoute>
+          }
+        />
+        <Route
+          path="/blogs/:id"
+          element={
+            <MainLayout>
+              <BlogDetail />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Home />
+            </MainLayout>
           }
         />
         {/* <Route path="*" element={<NotFound />} /> */}

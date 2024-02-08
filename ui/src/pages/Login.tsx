@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import { SplitScreenLayout } from "../components/layouts/SplitScreenLayout";
 import { useLoginUserMutation } from "../services/blogApi";
-import logo from "../images/Logo.png";
+import logo from "../images/logo-black.png";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { extractErrorMessage } from "../utils/errorUtils";
@@ -110,12 +110,20 @@ const Login: FC = () => {
             )}
           </div>
 
-          <p className="text-center">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-[#457E86] hover:underline">
-              Sign Up
+          <div className="flex flex-col justify-between text-center sm:flex-row ">
+            <p>
+              Don't have an account?{" "}
+              <Link to="/register" className="text-[#457E86] hover:underline">
+                Sign Up
+              </Link>
+            </p>
+            <Link
+              to="/"
+              className="underline hover:no-underline hover:text-[#457E86]"
+            >
+              Go back to blogs
             </Link>
-          </p>
+          </div>
           {errorMessage && (
             <div
               className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
