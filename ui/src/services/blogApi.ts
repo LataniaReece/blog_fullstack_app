@@ -30,7 +30,7 @@ export const enhancedApi = blogApi.injectEndpoints({
       query: () => ({ url: "/blogs/featured" }),
     }),
     getBlogById: builder.query<BlogResponse, BlogByIdArg>({
-      query: (id) => ({ url: `/blogs/${id}` }),
+      query: (queryArg) => ({ url: `/blogs/${queryArg.id}` }),
     }),
     getUserBlogs: builder.query<BlogsResponse, void>({
       query: (id) => ({ url: `/blogs/user/userId/${id}` }),
