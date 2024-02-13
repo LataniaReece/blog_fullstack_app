@@ -93,7 +93,7 @@ const Hero: FC = () => {
             {/* Main Blog */}
             <Link
               to={`/blogs/${mainBlog.id}`}
-              className="w-full flex-1 mb-6 lg:pr-4 relative"
+              className="w-full flex-1 mb-6 lg:pr-4 relative hover:scale-105 hover:underline transition-transform duration-200"
             >
               <img
                 src={mainBlog.imageUrl}
@@ -118,12 +118,12 @@ const Hero: FC = () => {
             </Link>
 
             {/* Other Blogs */}
-            <div className="w-full flex-1 flex flex-col gap-6 lg:gap-0 justify-between">
+            <div className="w-full flex-1 flex flex-col gap-6 lg:gap-4 justify-between">
               {otherBlogs.map((blog) => (
                 <Fragment key={blog.id}>
                   <Link
                     to={`/blogs/${blog.id}`}
-                    className="flex flex-row items-center gap-4"
+                    className="flex flex-row items-center gap-4 hover:scale-105 hover:underline transition-transform duration-200"
                   >
                     <div className="basis-2/5 order-2 lg:order-1">
                       <img

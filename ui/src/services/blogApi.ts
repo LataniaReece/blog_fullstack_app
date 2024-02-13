@@ -23,8 +23,10 @@ export const enhancedApi = blogApi.injectEndpoints({
         method: "POST",
       }),
     }),
-    getBlogs: builder.query<BlogsResponse, void>({
-      query: () => ({ url: "/blogs" }),
+    getBlogs: builder.query<BlogsResponse, BlogsArg>({
+      query: (queryArg) => ({
+        url: `/blogs?page=${queryArg.page}&limit=${queryArg.limit}`,
+      }),
     }),
     getFeaturedBlogs: builder.query<BlogsResponse, void>({
       query: () => ({ url: "/blogs/featured" }),
@@ -79,7 +81,11 @@ export interface RefreshTokenResponse {
 // Blogs interfaces
 interface BlogsResponse {
   blogs: Blog[];
+  totalPages: number;
+  totalBlogs: number;
+  hasNextPage: boolean;
 }
+
 interface BlogResponse {
   blog: Blog;
 }
@@ -95,6 +101,11 @@ interface NewBlog {
 
 interface UpdatedBlog extends NewBlog {
   id: string;
+}
+
+interface BlogsArg {
+  page: number;
+  limit: number;
 }
 
 export const {
