@@ -12,9 +12,19 @@ interface UpdateBlogInput extends BlogInput {
   id: string;
 }
 
-export const getBlogs = async () => {
-  const blogs = await prisma.blog.findMany();
-  return { blogs };
+export const getBlogs = async (page = 1, limit = 10) => {
+  const skip = (page - 1) * limit; // Calculate the starting point
+
+  const blogs = await prisma.blog.findMany({
+    skip,
+    take: limit,
+  });
+
+  const totalBlogs = await prisma.blog.count();
+  const totalPages = Math.ceil(totalBlogs / limit);
+  const hasNextPage = page < totalPages;
+
+  return { blogs, totalBlogs, totalPages, hasNextPage };
 };
 
 export const getFeaturedBlogs = async () => {

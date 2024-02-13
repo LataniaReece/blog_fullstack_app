@@ -6,8 +6,13 @@ import asyncErrorHandler from "../utils/asyncErrorHandler";
 // Get all blogs
 export const getAllBlogs = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { blogs } = await BlogService.getBlogs();
-    res.status(200).json({ blogs });
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const { blogs, totalBlogs, hasNextPage, totalPages } =
+      await BlogService.getBlogs(page, limit);
+
+    res.status(200).json({ blogs, totalPages, totalBlogs, hasNextPage });
   }
 );
 
