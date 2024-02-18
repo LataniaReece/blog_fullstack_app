@@ -28,8 +28,14 @@ export const getFeaturedBlogs = asyncErrorHandler(
 export const getUserBlogs = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.userId;
-    const { blogs } = await BlogService.getUserBlogs(userId);
-    res.status(200).json({ blogs });
+
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const { blogs, totalBlogs, hasNextPage, totalPages } =
+      await BlogService.getUserBlogs(userId, page, limit);
+
+    res.status(200).json({ blogs, totalPages, totalBlogs, hasNextPage });
   }
 );
 
