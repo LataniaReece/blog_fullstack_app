@@ -18,11 +18,11 @@ router.get("/user/:userId", validateAuthenticated, BlogController.getUserBlogs);
 router.post(
   "/",
   validateAuthenticated,
-  upload.single("image"),
+  upload.single("file"),
   [
     body("title").notEmpty().withMessage("Title is required"),
     body("content").notEmpty().withMessage("Content is required"),
-    body("categories").isArray().withMessage("Categories must be an array"),
+    body("categories").notEmpty().withMessage("Categories is required"),
   ],
   validateRequest,
   BlogController.createBlog
@@ -31,11 +31,11 @@ router.post(
 router.put(
   "/:id",
   validateAuthenticated,
-  upload.single("image"),
+  upload.single("file"),
   [
     body("title").notEmpty().withMessage("Title is required"),
     body("content").notEmpty().withMessage("Content is required"),
-    body("categories").isArray().withMessage("Categories must be an array"),
+    body("categories").notEmpty().withMessage("Categories is required"),
   ],
   validateRequest,
   BlogController.updateBlog

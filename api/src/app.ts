@@ -7,7 +7,12 @@ import routes from "./routes";
 function createServer() {
   const app: Application = express();
 
-  app.use(cors());
+  const corsOptions = {
+    origin: process.env.FRONTEND_ORIGIN,
+    credentials: true,
+  };
+
+  app.use(cors(corsOptions));
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));

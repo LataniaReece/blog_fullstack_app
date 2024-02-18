@@ -3,7 +3,7 @@ import prisma from "../utils/db";
 interface BlogInput {
   title: string;
   content: string;
-  categories: string[];
+  categories: string;
   authorId: string;
   imageUrl: string | null;
 }

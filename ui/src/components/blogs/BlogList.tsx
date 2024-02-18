@@ -1,29 +1,40 @@
 import { FC, useEffect, useState } from "react";
-import { useGetBlogsQuery } from "../services/blogApi";
-import { Blog } from "../types/blogTypes";
+import { BlogsResponse } from "../../services/blogApi";
+import { Blog } from "../../types/blogTypes";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-const BlogList: FC = () => {
-  const [page, setPage] = useState(1);
+interface BlogListProps {
+  data: BlogsResponse | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  isFetching: boolean;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const BlogList: FC<BlogListProps> = ({
+  data,
+  isLoading,
+  isError,
+  isFetching,
+  setPage,
+}) => {
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
   const [blogIds, setBlogIds] = useState<Set<number | string>>(new Set());
-
-  const { data, isLoading, isError, isFetching } = useGetBlogsQuery({
-    page,
-    limit: 4,
-  });
 
   const hasNextPage = data?.hasNextPage;
 
   useEffect(() => {
     if (data?.blogs && data.blogs.length > 0) {
-      const newBlogs = data.blogs.filter((blog) => !blogIds.has(blog.id));
-      const newBlogIds = new Set(blogIds);
-      newBlogs.forEach((blog) => newBlogIds.add(blog.id));
+      const uniqueNewBlogs = data.blogs.filter((blog) => !blogIds.has(blog.id));
+      const updatedBlogs = [...allBlogs, ...uniqueNewBlogs];
+      const updatedBlogIds = new Set([
+        ...blogIds,
+        ...uniqueNewBlogs.map((blog) => blog.id),
+      ]);
 
-      setAllBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
-      setBlogIds(newBlogIds);
+      setAllBlogs(updatedBlogs);
+      setBlogIds(updatedBlogIds);
     }
   }, [data?.blogs]);
 
@@ -138,7 +149,7 @@ const BlogList: FC = () => {
         <div role="status" className="flex justify-center">
           <svg
             aria-hidden="true"
-            className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            className="w-8 h-8 text-gray-200 animate-spin fill-blue-600"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

@@ -13,7 +13,7 @@ const Navbar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
 
-  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { id } = useSelector((state: RootState) => state.user);
 
   const handleLogout = () => {
     dispatch(logUserOut());
@@ -35,7 +35,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
         <div className="flex space-x-4">
-          {isLoggedIn ? (
+          {id ? (
             <>
               <button onClick={() => handleLogout()}>Logout</button>
               <Link to="/account" className="hover:underline">
@@ -92,7 +92,7 @@ const Navbar: FC = () => {
                 <FaTimes size={24} />
               </button>
             </div>
-            {isLoggedIn ? (
+            {id ? (
               <>
                 <button onClick={() => handleLogout()}>Logout</button>
                 <Link to="/account" className="hover:underline">

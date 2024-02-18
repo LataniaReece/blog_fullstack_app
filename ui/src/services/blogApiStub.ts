@@ -10,12 +10,13 @@ const refreshAccessToken = async () => {
     // Sending a request to the refresh-token endpoint.
     // The refresh token is sent automatically in a cookie.
     const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/refresh-token`,
+      `${import.meta.env.VITE_API_BASE_URL}/auth/refresh-token`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       }
     );
     const data = await response.json();
@@ -42,6 +43,7 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  credentials: "include", // Include credentials in every request
 });
 
 const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {

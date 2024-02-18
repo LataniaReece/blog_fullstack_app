@@ -31,7 +31,7 @@ async function main() {
           title,
           content,
           featured,
-          categories: { set: categories },
+          categories,
           imageUrl,
           createdAt: new Date(),
           updatedAt: new Date(),

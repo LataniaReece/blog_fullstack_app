@@ -7,6 +7,6 @@ export interface Blog {
   updatedAt: Date;
   content: string;
   author: string;
-  categories: string[];
+  categories: string;
   imageUrl: string;
 }

@@ -4,11 +4,12 @@ import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
-import BlogDetail from "./components/BlogDetail";
 
 const Login = lazy(() => import("./pages/Login"));
 const Home = lazy(() => import("./pages/Home"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
+const BlogDetail = lazy(() => import("./pages/BlogDetail"));
+const CreateBlog = lazy(() => import("./pages/CreateBlog"));
 
 interface LayoutProps {
   children: ReactNode;
@@ -28,9 +29,9 @@ interface AuthRouteProps {
 }
 
 const AuthRoute: FC<AuthRouteProps> = ({ children }) => {
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const { id } = useSelector((state: RootState) => state.user);
 
-  if (!isLoggedIn) {
+  if (!id) {
     // User is not logged in, redirect them
     return <Navigate to="/login" replace />;
   }
@@ -64,6 +65,16 @@ const Routes: FC = () => {
             <AuthRoute>
               <MainLayout>
                 <MyAccount />
+              </MainLayout>
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/blogs/new"
+          element={
+            <AuthRoute>
+              <MainLayout>
+                <CreateBlog />
               </MainLayout>
             </AuthRoute>
           }

@@ -26,6 +26,6 @@ model Blog {
   updatedAt  DateTime @updatedAt
   authorId   String
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  categories String[]
+  categories String
   imageUrl   String? 
 }

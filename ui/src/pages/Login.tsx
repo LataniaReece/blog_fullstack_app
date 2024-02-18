@@ -35,13 +35,13 @@ const Login: FC = () => {
     useLoginUserMutation();
 
   const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { id } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (isLoggedIn || isSuccess) {
+    if (id || isSuccess) {
       navigate("/");
     }
-  }, [isLoggedIn, isSuccess, navigate]);
+  }, [id, isSuccess, navigate]);
 
   const errorMessage: string = isError ? extractErrorMessage(error) : "";
 

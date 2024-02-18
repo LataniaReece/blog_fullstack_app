@@ -31,12 +31,11 @@ const Hero: FC = () => {
 
   // Animation variants
   const containerVariants = {
-    hidden: { opacity: 0, y: 200 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.75,
+        duration: 0.3,
         ease: "easeInOut",
       },
     },
@@ -78,11 +77,6 @@ const Hero: FC = () => {
   return (
     <HeroWrapper>
       <>
-        {!allImagesLoaded && (
-          <div className="flex justify-center">
-            <p className="text-3xl">Loading Blogs...</p>
-          </div>
-        )}
         <div className="px-4 sm:px-10 text-left">
           <motion.div
             className="flex flex-col lg:flex-row lg:gap-6 w-full"
