@@ -79,8 +79,14 @@ export const createBlog = asyncErrorHandler(
 export const updateBlog = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const blogId = req.params.id;
-    const { title, content, categories } = req.body;
-    const imageUrl = req.file ? req.file.path : null;
+    const { title, content, categories, imageUrl } = req.body;
+
+    let imageUrlToSave = null;
+    if (req.file) {
+      imageUrlToSave = req.file.path;
+    } else if (imageUrl) {
+      imageUrlToSave = imageUrl;
+    }
 
     if (!req.user) {
       const err = new CustomError("User is not authenticated", 401);
@@ -92,7 +98,7 @@ export const updateBlog = asyncErrorHandler(
       content,
       categories,
       authorId: req.user.id,
-      imageUrl,
+      imageUrl: imageUrlToSave,
     });
     res.status(200).json({ blog });
   }

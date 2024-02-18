@@ -53,6 +53,11 @@ export const getUserBlogs = async (userId: string, page = 1, limit = 10) => {
 export const getBlogById = async (id: string) => {
   return await prisma.blog.findUnique({
     where: { id },
+    include: {
+      author: {
+        select: { id: true, username: true },
+      },
+    },
   });
 };
 
