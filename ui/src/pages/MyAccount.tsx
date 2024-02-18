@@ -8,7 +8,11 @@ import { useGetUserBlogsQuery } from "../services/blogApi";
 const MyAccount = () => {
   const [page, setPage] = useState<number>(1);
   const { id, username } = useSelector((state: RootState) => state.user);
-  const { data, isLoading, isFetching, isError } = useGetUserBlogsQuery({ id });
+  const { data, isLoading, isFetching, isError } = useGetUserBlogsQuery({
+    id,
+    page,
+    limit: 12,
+  });
 
   const navigate = useNavigate();
 

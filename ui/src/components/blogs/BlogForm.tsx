@@ -207,20 +207,29 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
         <div className="my-2">
           <p className="mb-1 font-semibold">Categories:</p>
           <div className="flex gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                type="button"
-                className={classNames("border text-sm py-1 px-2 rounded-full", {
-                  "bg-black text-white": selectedCategories.includes(category),
-                  "bg-transparent text-black hover:bg-black hover:text-white":
-                    !selectedCategories.includes(category),
-                })}
-                onClick={() => toggleCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
+            {categories.map((category) => {
+              const isSelected = selectedCategories.some(
+                (cat) =>
+                  cat.trim().toLowerCase() === category.trim().toLowerCase()
+              );
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  className={classNames(
+                    "border text-sm py-1 px-2 rounded-full",
+                    {
+                      "bg-black text-white": isSelected,
+                      "bg-transparent text-black hover:bg-black hover:text-white":
+                        !isSelected,
+                    }
+                  )}
+                  onClick={() => toggleCategory(category)}
+                >
+                  {category}
+                </button>
+              );
+            })}
           </div>
         </div>
         <div className="my-3">

@@ -37,7 +37,9 @@ export const enhancedApi = blogApi.injectEndpoints({
       query: (queryArg) => ({ url: `/blogs/${queryArg.id}` }),
     }),
     getUserBlogs: builder.query<BlogsResponse, UserBlogsArgs>({
-      query: (queryArg) => ({ url: `/blogs/user/${queryArg.id}` }),
+      query: (queryArg) => ({
+        url: `/blogs/user/${queryArg.id}?page=${queryArg.page}&limit=${queryArg.limit}`,
+      }),
     }),
     createBlog: builder.mutation<BlogResponse, FormData>({
       query: (newBlogData) => ({
@@ -88,10 +90,6 @@ export interface BlogsResponse {
   hasNextPage: boolean;
 }
 
-interface UserBlogsArgs {
-  id: string | null;
-}
-
 interface UpdateBlogArgs {
   id: string | undefined;
   formData: FormData;
@@ -107,6 +105,10 @@ interface BlogByIdArg {
 interface BlogsArg {
   page: number;
   limit: number;
+}
+
+interface UserBlogsArgs extends BlogsArg {
+  id: string | null;
 }
 
 export const {
