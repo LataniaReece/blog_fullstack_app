@@ -93,7 +93,7 @@ interface UserBlogsArgs {
 }
 
 interface UpdateBlogArgs {
-  id: string;
+  id: string | undefined;
   formData: FormData;
 }
 

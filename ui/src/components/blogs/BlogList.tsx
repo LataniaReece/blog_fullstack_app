@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { BlogsResponse } from "../../services/blogApi";
-import { Blog } from "../../types/blogTypes";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+
+import { BlogsResponse } from "../../services/blogApi";
+import { Blog } from "../../types/blogTypes";
 
 interface BlogListProps {
   data: BlogsResponse | undefined;
@@ -117,32 +118,6 @@ const BlogList: FC<BlogListProps> = ({
               </div>
             </Link>
           </motion.div>
-
-          // <motion.div
-          //   className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col hover:scale-105 hover:cursor-pointer hover:underline transition-transform duration-200"
-          //   key={blog.id}
-          //   variants={fadeIn}
-          //   initial="hidden"
-          //   animate="visible"
-          // >
-          //   <Link to={`/blogs/${blog.id}`}>
-          //     <img
-          //       className="w-full"
-          //       src={blog.imageUrl || "https://via.placeholder.com/200"}
-          //       alt={blog.title}
-          //     />
-          //     <div className="flex-grow p-6 flex flex-col justify-between border border-red-500">
-          //       <div>
-          //         <div className="font-bold text-xl mb-5">{blog.title}</div>
-          //       </div>
-          //       <div>
-          //         <button className="bg-transparent hover:bg-black text-black font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded-full">
-          //           See Blog
-          //         </button>
-          //       </div>
-          //     </div>
-          //   </Link>
-          // </motion.div>
         ))}
       </div>
       {isFetching && (

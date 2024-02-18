@@ -6,10 +6,14 @@ import { motion } from "framer-motion";
 
 import { useGetBlogByIdQuery } from "../services/blogApi";
 import PageLoader from "../components/PageLoader";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const BlogDetail = () => {
   const { id: blogId } = useParams();
   const { data, isLoading, isError } = useGetBlogByIdQuery({ id: `${blogId}` });
+
+  const { id: userId } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     window.scroll({
@@ -62,12 +66,22 @@ const BlogDetail = () => {
                 ))}
               </div>
             </div>
-            <Link
-              to="/"
-              className="bg-transparent hover:bg-black text-black text-xs lg:text-sm font-semibold hover:text-white py-1 px-2 border border-black hover:border-transparent rounded"
-            >
-              Go back
-            </Link>
+            <div className="flex gap-2">
+              {userId === blog.authorId && (
+                <Link
+                  to={`/blogs/update/${blog.id}`}
+                  className="bg-black hover:bg-gray-600 text-white text-xs lg:text-sm font-semibold py-1 px-2 border border-black hover:border-transparent rounded"
+                >
+                  Update Blog
+                </Link>
+              )}
+              <Link
+                to="/"
+                className="bg-transparent hover:bg-black text-black text-xs lg:text-sm font-semibold hover:text-white py-1 px-2 border border-black hover:border-transparent rounded"
+              >
+                Go back
+              </Link>
+            </div>
           </div>
           <h2 className="text-2xl font-bold mb-2 rounded">{blog.title}</h2>
         </div>

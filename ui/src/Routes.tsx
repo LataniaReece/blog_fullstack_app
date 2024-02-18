@@ -1,15 +1,17 @@
 import { FC, ReactElement, ReactNode, Suspense, lazy } from "react";
 import { Navigate, Route, Routes as RouterRoutes } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Register from "./pages/Register";
 import { useSelector } from "react-redux";
-import { RootState } from "./store";
 
 const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
 const Home = lazy(() => import("./pages/Home"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const CreateBlog = lazy(() => import("./pages/CreateBlog"));
+const UpdateBlog = lazy(() => import("./pages/UpdateBlog"));
+
+import Navbar from "./components/Navbar";
+import { RootState } from "./store";
 
 interface LayoutProps {
   children: ReactNode;
@@ -75,6 +77,16 @@ const Routes: FC = () => {
             <AuthRoute>
               <MainLayout>
                 <CreateBlog />
+              </MainLayout>
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/blogs/update/:id"
+          element={
+            <AuthRoute>
+              <MainLayout>
+                <UpdateBlog />
               </MainLayout>
             </AuthRoute>
           }
