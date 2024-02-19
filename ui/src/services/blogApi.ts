@@ -28,6 +28,7 @@ export const enhancedApi = blogApi.injectEndpoints({
         url: `/blogs?page=${queryArg.page}&limit=${queryArg.limit}`,
       }),
       keepUnusedDataFor: 60 * 60,
+      providesTags: ["AllBlogs"],
     }),
     getFeaturedBlogs: builder.query<BlogsResponse, void>({
       query: () => ({ url: "/blogs/featured" }),
@@ -35,11 +36,13 @@ export const enhancedApi = blogApi.injectEndpoints({
     }),
     getBlogById: builder.query<BlogResponse, BlogByIdArg>({
       query: (queryArg) => ({ url: `/blogs/${queryArg.id}` }),
+      providesTags: (_, __, arg) => [{ type: "BlogDetail", id: arg.id }],
     }),
     getUserBlogs: builder.query<BlogsResponse, UserBlogsArgs>({
       query: (queryArg) => ({
         url: `/blogs/user/${queryArg.id}?page=${queryArg.page}&limit=${queryArg.limit}`,
       }),
+      providesTags: ["UserBlogs"],
     }),
     createBlog: builder.mutation<BlogResponse, FormData>({
       query: (newBlogData) => ({
@@ -47,6 +50,7 @@ export const enhancedApi = blogApi.injectEndpoints({
         method: "POST",
         body: newBlogData,
       }),
+      invalidatesTags: ["UserBlogs", "AllBlogs"],
     }),
     updateBlog: builder.mutation<BlogResponse, UpdateBlogArgs>({
       query: ({ id, formData }) => ({
@@ -54,12 +58,18 @@ export const enhancedApi = blogApi.injectEndpoints({
         method: "PUT",
         body: formData,
       }),
+      invalidatesTags: (_, __, { id }) => [
+        "UserBlogs",
+        "AllBlogs",
+        { type: "BlogDetail", id },
+      ],
     }),
     deleteBlog: builder.mutation<{ message: string }, BlogByIdArg>({
-      query: (id) => ({
-        url: `/blogs/${id}`,
+      query: (queryArg) => ({
+        url: `/blogs/${queryArg.id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["UserBlogs", "AllBlogs"],
     }),
   }),
 });

@@ -6,9 +6,12 @@ import {
   useUpdateBlogMutation,
 } from "../../services/blogApi";
 import classNames from "classnames";
-import BlogEditor from "./BlogEditor";
+import { toast } from "react-toastify";
 import { IoClose } from "react-icons/io5";
+
+import BlogEditor from "./BlogEditor";
 import PageLoader from "../../components/PageLoader";
+import Spinner from "../Spinner";
 
 const categories: string[] = [
   "Lifestyle",
@@ -66,8 +69,10 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
 
   useEffect(() => {
     if (isSuccessCreate) {
+      toast.success("Blog created!");
       navigate("/account");
     } else if (isSuccessUpdate) {
+      toast.success("Blog updated!");
       navigate(`/blogs/${blog?.id}`);
     }
   }, [isSuccessCreate, isSuccessUpdate, navigate, blog]);
@@ -187,7 +192,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
   };
 
   return (
-    <div className="container mx-auto my-10">
+    <div className="container mx-auto my-10 px-4 md:px-0">
       <p className="text-3xl font-semibold">
         {mode === "create" ? "Add Blog" : "Update Blog"}
       </p>
@@ -206,7 +211,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
         </div>
         <div className="my-2">
           <p className="mb-1 font-semibold">Categories:</p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {categories.map((category) => {
               const isSelected = selectedCategories.some(
                 (cat) =>
@@ -240,13 +245,13 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
             <BlogEditor content={content} setContent={setContent} />
           </div>
         </div>
-        <div className="mt-14 mb-4">
+        <div className="mt-[100px] md:mt-14 mb-4">
           <img
             src={
               imagePreviewUrl || imageUrl || "https://via.placeholder.com/200"
             }
             alt="Preview"
-            className="max-w-xs h-[200px]"
+            className="max-w-xs w-full h-[200px]"
           />
         </div>
         <div className=" mb-3">
@@ -289,7 +294,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
         <div className="flex justify-end">
           <button
             className={classNames(
-              "shadow bg-black focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
+              "shadow bg-black focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto",
               {
                 "hover:bg-gray-700": !isLoadingFormSubmit,
                 "opacity-50 cursor-not-allowed": isLoadingFormSubmit,
@@ -298,11 +303,13 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
             type="submit"
             disabled={isLoadingFormSubmit}
           >
-            {isLoadingFormSubmit
-              ? "Submitting..."
-              : isUpdateMode
-              ? "Update Blog"
-              : "Create Blog"}
+            {isLoadingFormSubmit ? (
+              <Spinner />
+            ) : isUpdateMode ? (
+              "Update Blog"
+            ) : (
+              "Create Blog"
+            )}
           </button>
         </div>
       </form>

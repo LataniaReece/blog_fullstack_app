@@ -6,7 +6,7 @@ export interface Blog {
   createdAt: Date;
   updatedAt: Date;
   content: string;
-  authorId: string;
+  author: { username: string; id: string };
   categories: string;
   imageUrl: string;
 }

@@ -39,6 +39,7 @@ const MyAccount = () => {
         isLoading={isLoading}
         isError={isError}
         setPage={setPage}
+        isHomePage={false}
       />
     </div>
   );

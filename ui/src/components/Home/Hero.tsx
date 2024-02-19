@@ -77,7 +77,7 @@ const Hero: FC = () => {
   return (
     <HeroWrapper>
       <>
-        <div className="px-4 sm:px-10 text-left">
+        <div className="px-4 text-left">
           <motion.div
             className="flex flex-col lg:flex-row lg:gap-6 w-full"
             initial="hidden"

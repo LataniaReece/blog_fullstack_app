@@ -14,6 +14,7 @@ interface BlogListProps {
   isError: boolean;
   isFetching: boolean;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  isHomePage: boolean;
 }
 
 const BlogList: FC<BlogListProps> = ({
@@ -22,6 +23,7 @@ const BlogList: FC<BlogListProps> = ({
   isError,
   isFetching,
   setPage,
+  isHomePage,
 }) => {
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
   const [blogIds, setBlogIds] = useState<Set<number | string>>(new Set());
@@ -58,7 +60,7 @@ const BlogList: FC<BlogListProps> = ({
 
   const fadeIn = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1, delay: 0.5 } },
+    visible: { opacity: 1, transition: { duration: 0.1 } },
   };
 
   return (
@@ -77,7 +79,11 @@ const BlogList: FC<BlogListProps> = ({
         )
       }
     >
-      <div className="container mx-auto grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 py-10 px-4">
+      <div
+        className={`container mx-auto grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 py-10 ${
+          isHomePage ? "px-4" : ""
+        }`}
+      >
         {allBlogs.map((blog) => (
           <motion.div
             className="md:max-w-sm rounded overflow-hidden shadow-lg flex flex-col h-full hover:scale-105 hover:cursor-pointer hover:underline transition-transform duration-200" // ensure the card itself has a full height

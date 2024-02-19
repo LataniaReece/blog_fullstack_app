@@ -20,6 +20,7 @@ const Home: FC = () => {
         isFetching={isFetching}
         isError={isError}
         setPage={setPage}
+        isHomePage={true}
       />
     </>
   );
