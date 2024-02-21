@@ -20,7 +20,7 @@ const MyAccount = () => {
     if (!id) {
       navigate("/login");
     }
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <div className="container mx-auto mt-10">
@@ -38,6 +38,7 @@ const MyAccount = () => {
         isFetching={isFetching}
         isLoading={isLoading}
         isError={isError}
+        page={page}
         setPage={setPage}
         isHomePage={false}
       />

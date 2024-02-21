@@ -16,6 +16,7 @@ import Spinner from "../components/Spinner";
 
 const BlogDetail = () => {
   const { id: blogId } = useParams();
+  const navigate = useNavigate();
   const { data, isLoading, isError } = useGetBlogByIdQuery({ id: `${blogId}` });
 
   const [
@@ -27,7 +28,6 @@ const BlogDetail = () => {
       error: deleteError,
     },
   ] = useDeleteBlogMutation();
-  const navigate = useNavigate();
 
   const { id: userId } = useSelector((state: RootState) => state.user);
 
@@ -66,6 +66,17 @@ const BlogDetail = () => {
     return { __html: DOMPurify.sanitize(htmlContent) };
   };
 
+  const handleNavigateToSearch = (
+    searchType: "category" | "authorName",
+    value: string
+  ) => {
+    navigate("/blogs/search", {
+      state: {
+        [searchType]: value,
+      },
+    });
+  };
+
   const handleDelete = () => {
     if (blog?.id) {
       if (window.confirm(`Are you sure you want to delete ${blog?.title}`)) {
@@ -97,12 +108,16 @@ const BlogDetail = () => {
               </p>
               <div className="flex gap-2">
                 {blog.categories.split(",").map((category) => (
-                  <p
+                  <button
+                    type="button"
                     key={category}
-                    className="text-gray-500 font-light text-xs uppercase mt-2 underline"
+                    className="text-gray-500 font-light text-xs uppercase mt-2 underline hover:text-gray-400"
+                    onClick={() =>
+                      handleNavigateToSearch("category", category.trim())
+                    }
                   >
                     {category}
-                  </p>
+                  </button>
                 ))}
               </div>
             </div>
@@ -133,9 +148,14 @@ const BlogDetail = () => {
             </div>
           </div>
           <h2 className="text-2xl font-bold rounded">{blog.title}</h2>
-          <p className="capitalize font-bold text-gray-600">
+          <button
+            onClick={() =>
+              handleNavigateToSearch("authorName", blog.author.username.trim())
+            }
+            className="capitalize font-bold text-gray-600 underline hover:text-gray-400"
+          >
             By: {blog.author.username}
-          </p>
+          </button>
         </div>
 
         <div className="py-2 rounded">

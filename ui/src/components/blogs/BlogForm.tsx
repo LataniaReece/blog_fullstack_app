@@ -12,15 +12,7 @@ import { IoClose } from "react-icons/io5";
 import BlogEditor from "./BlogEditor";
 import PageLoader from "../../components/PageLoader";
 import Spinner from "../Spinner";
-
-const categories: string[] = [
-  "Lifestyle",
-  "Sustainability",
-  "Health",
-  "Minimalism",
-  "Wellness",
-  "Mindfulness",
-];
+import { categories } from "../../utils/constants";
 
 interface BlogFormProps {
   mode: "create" | "update";

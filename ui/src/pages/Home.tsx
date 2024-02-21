@@ -19,6 +19,7 @@ const Home: FC = () => {
         isLoading={isLoading}
         isFetching={isFetching}
         isError={isError}
+        page={page}
         setPage={setPage}
         isHomePage={true}
       />

@@ -8,9 +8,16 @@ export const getAllBlogs = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
+    const category = req.query.category as string | undefined;
+    const authorName = req.query.author as string | undefined;
+    const keyword = req.query.keyword as string | undefined;
 
     const { blogs, totalBlogs, hasNextPage, totalPages } =
-      await BlogService.getBlogs(page, limit);
+      await BlogService.getBlogs(page, limit, {
+        category,
+        authorName,
+        keyword,
+      });
 
     res.status(200).json({ blogs, totalPages, totalBlogs, hasNextPage });
   }
@@ -21,6 +28,13 @@ export const getFeaturedBlogs = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { blogs } = await BlogService.getFeaturedBlogs();
     res.status(200).json({ blogs });
+  }
+);
+
+export const getUsersWithBlogs = asyncErrorHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { users } = await BlogService.getUsersWithBlogs();
+    res.status(200).json({ users });
   }
 );
 

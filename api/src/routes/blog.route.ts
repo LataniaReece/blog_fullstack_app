@@ -12,6 +12,7 @@ const router = Router();
 
 router.get("/", BlogController.getAllBlogs);
 router.get("/featured", BlogController.getFeaturedBlogs);
+router.get("/users-with-blogs", BlogController.getUsersWithBlogs);
 router.get("/:id", BlogController.getBlogById);
 router.get("/user/:userId", validateAuthenticated, BlogController.getUserBlogs);
 

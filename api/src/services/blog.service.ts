@@ -12,10 +12,43 @@ interface UpdateBlogInput extends BlogInput {
   id: string;
 }
 
-export const getBlogs = async (page = 1, limit = 10) => {
+interface BlogFilters {
+  category?: string;
+  authorName?: string;
+  keyword?: string;
+}
+
+export const getBlogs = async (
+  page = 1,
+  limit = 10,
+  filters: BlogFilters = {}
+) => {
+  const { category, authorName, keyword } = filters;
   const skip = (page - 1) * limit;
 
+  let searchCriteria: any = {};
+
+  if (category) {
+    searchCriteria["categories"] = { contains: category, mode: "insensitive" };
+  }
+
+  if (authorName) {
+    searchCriteria["author"] = {
+      is: {
+        username: { contains: authorName, mode: "insensitive" },
+      },
+    };
+  }
+
+  if (keyword) {
+    searchCriteria["OR"] = [
+      { title: { contains: keyword, mode: "insensitive" } },
+      { content: { contains: keyword, mode: "insensitive" } },
+    ];
+  }
+
   const blogs = await prisma.blog.findMany({
+    where: searchCriteria,
     skip,
     take: limit,
   });
@@ -30,6 +63,20 @@ export const getBlogs = async (page = 1, limit = 10) => {
 export const getFeaturedBlogs = async () => {
   const blogs = await prisma.blog.findMany({ where: { featured: true } });
   return { blogs };
+};
+
+export const getUsersWithBlogs = async () => {
+  const users = await prisma.user.findMany({
+    where: {
+      blogs: {
+        some: {},
+      },
+    },
+    select: {
+      username: true,
+    },
+  });
+  return { users };
 };
 
 export const getUserBlogs = async (userId: string, page = 1, limit = 10) => {

@@ -9,6 +9,7 @@ const MyAccount = lazy(() => import("./pages/MyAccount"));
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const CreateBlog = lazy(() => import("./pages/CreateBlog"));
 const UpdateBlog = lazy(() => import("./pages/UpdateBlog"));
+const BlogSearch = lazy(() => import("./pages/BlogSearch"));
 
 import Navbar from "./components/Navbar";
 import { RootState } from "./store";
@@ -89,6 +90,14 @@ const Routes: FC = () => {
                 <UpdateBlog />
               </MainLayout>
             </AuthRoute>
+          }
+        />
+        <Route
+          path="/blogs/search"
+          element={
+            <MainLayout>
+              <BlogSearch />
+            </MainLayout>
           }
         />
         <Route

@@ -1,7 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { CiWarning } from "react-icons/ci";
+import isEqual from "lodash/isEqual";
 
 import { BlogsResponse } from "../../services/blogApi";
 import { Blog } from "../../types/blogTypes";
@@ -13,6 +15,7 @@ interface BlogListProps {
   isLoading: boolean;
   isError: boolean;
   isFetching: boolean;
+  page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   isHomePage: boolean;
 }
@@ -22,29 +25,34 @@ const BlogList: FC<BlogListProps> = ({
   isLoading,
   isError,
   isFetching,
+  page,
   setPage,
   isHomePage,
 }) => {
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
-  const [blogIds, setBlogIds] = useState<Set<number | string>>(new Set());
+  const lastBlogsRef = useRef<Blog[]>([]);
 
   const fetchNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
-    if (data?.blogs && data.blogs.length > 0) {
-      const uniqueNewBlogs = data.blogs.filter((blog) => !blogIds.has(blog.id));
-      const updatedBlogs = [...allBlogs, ...uniqueNewBlogs];
-      const updatedBlogIds = new Set([
-        ...blogIds,
-        ...uniqueNewBlogs.map((blog) => blog.id),
-      ]);
-
-      setAllBlogs(updatedBlogs);
-      setBlogIds(updatedBlogIds);
+    if (data?.blogs && !isEqual(data.blogs, lastBlogsRef.current)) {
+      if (page === 1) {
+        setAllBlogs(data.blogs);
+      } else {
+        setAllBlogs((prevBlogs) => [...prevBlogs, ...data.blogs]);
+      }
+      lastBlogsRef.current = data.blogs;
     }
-  }, [data?.blogs]);
+  }, [data?.blogs, page]);
+
+  useEffect(() => {
+    return () => {
+      setAllBlogs([]);
+      lastBlogsRef.current = [];
+    };
+  }, []);
 
   if (isLoading) {
     return <PageLoader text="Loading Blogs..." />;
@@ -54,6 +62,15 @@ const BlogList: FC<BlogListProps> = ({
     return (
       <div className="flex justify-center">
         <p className="text-3xl">Error fetching blogs. Please try again.</p>
+      </div>
+    );
+  }
+
+  if (!isLoading && !isError && !isFetching && data?.blogs?.length === 0) {
+    return (
+      <div className="flex flex-col items-center py-5">
+        <CiWarning size={40} />
+        <p className="text-2xl">No blogs found</p>
       </div>
     );
   }
@@ -69,15 +86,6 @@ const BlogList: FC<BlogListProps> = ({
       next={fetchNextPage}
       hasMore={data?.hasNextPage || false}
       loader={<Spinner />}
-      endMessage={
-        allBlogs.length &&
-        !isFetching &&
-        !data?.hasNextPage && (
-          <p className="text-center mb-2 text-gray-400 font-light">
-            End of blogs
-          </p>
-        )
-      }
     >
       <div
         className={`container mx-auto grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 py-10 ${

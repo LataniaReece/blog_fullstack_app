@@ -24,15 +24,28 @@ export const enhancedApi = blogApi.injectEndpoints({
       }),
     }),
     getBlogs: builder.query<BlogsResponse, BlogsArg>({
-      query: (queryArg) => ({
-        url: `/blogs?page=${queryArg.page}&limit=${queryArg.limit}`,
-      }),
-      keepUnusedDataFor: 60 * 60,
+      query: (queryArg) => {
+        let url = `/blogs?page=${queryArg.page}&limit=${queryArg.limit}`;
+
+        if (queryArg.category) {
+          url += `&category=${encodeURIComponent(queryArg.category)}`;
+        }
+        if (queryArg.authorName) {
+          url += `&author=${encodeURIComponent(queryArg.authorName)}`;
+        }
+        if (queryArg.keyword) {
+          url += `&keyword=${encodeURIComponent(queryArg.keyword)}`;
+        }
+
+        return { url };
+      },
       providesTags: ["AllBlogs"],
     }),
     getFeaturedBlogs: builder.query<BlogsResponse, void>({
       query: () => ({ url: "/blogs/featured" }),
-      keepUnusedDataFor: 60 * 60,
+    }),
+    getUsersWithBlogs: builder.query<UsersWithBlogsResponse, void>({
+      query: () => ({ url: "/blogs/users-with-blogs" }),
     }),
     getBlogById: builder.query<BlogResponse, BlogByIdArg>({
       query: (queryArg) => ({ url: `/blogs/${queryArg.id}` }),
@@ -115,10 +128,17 @@ interface BlogByIdArg {
 interface BlogsArg {
   page: number;
   limit: number;
+  category?: string | null;
+  authorName?: string | null;
+  keyword?: string | null;
 }
 
 interface UserBlogsArgs extends BlogsArg {
   id: string | null;
+}
+
+interface UsersWithBlogsResponse {
+  users: { username: string }[];
 }
 
 export const {
@@ -127,6 +147,7 @@ export const {
   useRefreshTokenMutation,
   useGetBlogsQuery,
   useGetFeaturedBlogsQuery,
+  useGetUsersWithBlogsQuery,
   useGetBlogByIdQuery,
   useGetUserBlogsQuery,
   useCreateBlogMutation,

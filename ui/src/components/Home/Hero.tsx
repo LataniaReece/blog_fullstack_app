@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
+import { CiWarning } from "react-icons/ci";
 
 const Hero: FC = () => {
   const [loadedImages, setLoadedImages] = useState({});
@@ -35,7 +36,7 @@ const Hero: FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.3,
+        duration: 0.2,
         ease: "easeInOut",
       },
     },
@@ -64,8 +65,9 @@ const Hero: FC = () => {
   if (!blogs || blogs.length === 0) {
     return (
       <HeroWrapper>
-        <div className="flex justify-center">
-          <p className="text-3xl">No blogs found</p>
+        <div className="flex flex-col items-center py-5">
+          <CiWarning size={40} />
+          <p className="text-2xl">No blogs found</p>
         </div>
       </HeroWrapper>
     );
