@@ -7,17 +7,26 @@ interface UsersDropdownProps {
       }[]
     | undefined;
   handleSelectUser: (user: string) => void;
+  searchParamsQuery: {
+    category: string;
+    authorName: string;
+    keyword: string;
+  };
 }
 
-const UsersDropdown: FC<UsersDropdownProps> = ({ users, handleSelectUser }) => {
+const UsersDropdown: FC<UsersDropdownProps> = ({
+  users,
+  handleSelectUser,
+  searchParamsQuery,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const dropdownRef = useRef<HTMLDivElement>(null); // Ref to the dropdown container
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (user: string) => {
     handleSelectUser(user);
     setSearchTerm(user);
-    setIsOpen(false); // Optionally close the dropdown upon selection
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -35,6 +44,10 @@ const UsersDropdown: FC<UsersDropdownProps> = ({ users, handleSelectUser }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    setSearchTerm(searchParamsQuery.authorName || "");
+  }, [searchParamsQuery.authorName]);
 
   return (
     <div ref={dropdownRef} className="relative mt-3 flex items-center gap-2">

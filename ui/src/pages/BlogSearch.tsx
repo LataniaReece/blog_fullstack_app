@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useMemo } from "react";
+import { useState, useEffect, FC, useMemo, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
 import classNames from "classnames";
@@ -18,12 +18,24 @@ const BlogSearch: FC = () => {
   const [page, setPage] = useState(1);
   const [keywordInputValue, setKeywordInputValue] = useState("");
 
-  // Initialize searchParamsQuery with empty values or values passed through location state
-  const [searchParamsQuery, setSearchParamsQuery] = useState({
-    category: "",
-    authorName: "",
-    keyword: "",
-  });
+  const getInitialSearchParams = () => {
+    if (location.state) {
+      const { category, authorName } = location.state as {
+        category?: string;
+        authorName?: string;
+      };
+      return {
+        category: category || "",
+        authorName: authorName || "",
+        keyword: "",
+      };
+    }
+    return { category: "", authorName: "", keyword: "" };
+  };
+
+  const [searchParamsQuery, setSearchParamsQuery] = useState(
+    getInitialSearchParams
+  );
 
   const { data, isLoading, isError, isFetching } = useGetBlogsQuery({
     page,
@@ -62,25 +74,14 @@ const BlogSearch: FC = () => {
     return () => debouncedUpdate.cancel();
   }, [keywordInputValue, debouncedUpdate]);
 
-  // Effect to initialize and clear search parameters
+  // useEffect to clear location state after using it, to prevent it from affecting future renders
   useEffect(() => {
     if (location.state) {
-      const { category, authorName } = location.state as {
-        category?: string;
-        authorName?: string;
-      };
-      setSearchParamsQuery({
-        category: category || "",
-        authorName: authorName || "",
-        keyword: "",
-      });
-
-      // Clear the state after setting the search parameters
       navigate(location.pathname, { replace: true });
     }
-  }, [location.state, navigate, location.pathname]);
+  }, [navigate, location.pathname, location.state]);
 
-  const handleCategoryClick = (category: string) => {
+  const handleCategoryClick = useCallback((category: string) => {
     setSearchParamsQuery((prev) => ({
       ...prev,
       category,
@@ -88,9 +89,9 @@ const BlogSearch: FC = () => {
       keyword: "",
     }));
     setKeywordInputValue("");
-  };
+  }, []);
 
-  const handleSelectUser = (user: string) => {
+  const handleSelectUser = useCallback((user: string) => {
     setSearchParamsQuery((prev) => ({
       ...prev,
       category: "",
@@ -98,7 +99,7 @@ const BlogSearch: FC = () => {
       keyword: "",
     }));
     setKeywordInputValue("");
-  };
+  }, []);
 
   const users = usersData?.users;
 
@@ -171,16 +172,22 @@ const BlogSearch: FC = () => {
           </button>
         ))}
       </div>
-      <UsersDropdown users={users} handleSelectUser={handleSelectUser} />
-      <BlogList
-        data={data}
-        isLoading={isLoading || usersIsLoading}
-        isFetching={isFetching}
-        isError={isError || usersIsError}
-        page={page}
-        setPage={setPage}
-        isHomePage={false}
+      <UsersDropdown
+        users={users}
+        handleSelectUser={handleSelectUser}
+        searchParamsQuery={searchParamsQuery}
       />
+      <div className="mt-10">
+        <BlogList
+          data={data}
+          isLoading={isLoading || usersIsLoading}
+          isFetching={isFetching}
+          isError={isError || usersIsError}
+          page={page}
+          setPage={setPage}
+          isHomePage={false}
+        />
+      </div>
     </div>
   );
 };

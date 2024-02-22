@@ -88,7 +88,7 @@ const BlogList: FC<BlogListProps> = ({
       loader={<Spinner />}
     >
       <div
-        className={`container mx-auto grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 py-10 ${
+        className={`container mx-auto grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 pb-10 ${
           isHomePage ? "px-4" : ""
         }`}
       >

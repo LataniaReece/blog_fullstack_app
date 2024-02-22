@@ -7,7 +7,7 @@ import { useGetUserBlogsQuery } from "../services/blogApi";
 
 const MyAccount = () => {
   const [page, setPage] = useState<number>(1);
-  const { id, username } = useSelector((state: RootState) => state.user);
+  const { id } = useSelector((state: RootState) => state.user);
   const { data, isLoading, isFetching, isError } = useGetUserBlogsQuery({
     id,
     page,
@@ -24,8 +24,8 @@ const MyAccount = () => {
 
   return (
     <div className="container mx-auto mt-10">
-      <div className="flex items-center justify-between">
-        <p className="text-3xl capitalize mb-3">{`Hey, ${username}!`}</p>
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-2xl font-semibold">Your Blogs:</p>
         <Link
           to="/blogs/new"
           className="bg-black hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded"

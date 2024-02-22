@@ -13,7 +13,7 @@ const Navbar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
 
-  const { id } = useSelector((state: RootState) => state.user);
+  const { id, username } = useSelector((state: RootState) => state.user);
 
   const handleLogout = () => {
     dispatch(logUserOut());
@@ -38,8 +38,8 @@ const Navbar: FC = () => {
           {id ? (
             <>
               <button onClick={() => handleLogout()}>Logout</button>
-              <Link to="/account" className="hover:underline">
-                My Account
+              <Link to="/account" className="hover:underline capitalize">
+                {`${username}'s Account`}
               </Link>
             </>
           ) : (
@@ -96,7 +96,7 @@ const Navbar: FC = () => {
               <>
                 <button onClick={() => handleLogout()}>Logout</button>
                 <Link to="/account" className="hover:underline">
-                  My Account
+                  {`${username}'s Account`}
                 </Link>
               </>
             ) : (

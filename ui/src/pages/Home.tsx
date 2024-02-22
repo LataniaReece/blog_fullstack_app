@@ -14,15 +14,17 @@ const Home: FC = () => {
   return (
     <>
       <Hero />
-      <BlogList
-        data={data}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        isError={isError}
-        page={page}
-        setPage={setPage}
-        isHomePage={true}
-      />
+      <div className="mt-10">
+        <BlogList
+          data={data}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          isError={isError}
+          page={page}
+          setPage={setPage}
+          isHomePage={true}
+        />
+      </div>
     </>
   );
 };
