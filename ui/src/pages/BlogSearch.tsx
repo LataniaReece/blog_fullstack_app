@@ -125,9 +125,9 @@ const BlogSearch: FC = () => {
     <Container>
       <div className="my-10">
         {/* Filters Start */}
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col items-center gap-4 md:flex-row">
-            <form>
+        <div className="flex flex-col justify-start md:flex-row md:items-center md:justify-between">
+          <div className="w-full flex flex-col items-center gap-4 md:flex-row md:w-auto">
+            <form className="w-full md:w-auto">
               <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                   <IoIosSearch />
@@ -135,7 +135,7 @@ const BlogSearch: FC = () => {
                 <input
                   type="search"
                   id="search"
-                  className="block px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50  focus:border-blue-300 focus:outline-none"
+                  className="w-full md:w-auto block px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50  focus:border-blue-300 focus:outline-none"
                   placeholder="Search Blogs"
                   value={keywordInputValue}
                   onChange={(e) => setKeywordInputValue(e.target.value)}
@@ -163,7 +163,7 @@ const BlogSearch: FC = () => {
             <button
               type="button"
               onClick={clearFilters}
-              className="underline cursor-pointer hover:no-underline hover:text-slate-500"
+              className="underline cursor-pointer hover:no-underline hover:text-slate-500 mt-2 md:mt-0"
             >
               Clear Filters
             </button>

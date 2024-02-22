@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../store";
 import BlogList from "../components/blogs/BlogList";
 import { useGetUserBlogsQuery } from "../services/blogApi";
+import Container from "../components/Container";
 
 const MyAccount = () => {
   const [page, setPage] = useState<number>(1);
@@ -23,25 +24,27 @@ const MyAccount = () => {
   }, [id, navigate]);
 
   return (
-    <div className="container mx-auto mt-10">
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-2xl font-semibold">Your Blogs:</p>
-        <Link
-          to="/blogs/new"
-          className="bg-black hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded"
-        >
-          Add New +
-        </Link>
+    <Container>
+      <div className="mt-10">
+        <div className="flex flex-col items-start justify-between mb-4 md:flex-row md:items-center">
+          <p className="text-2xl font-semibold">Your Blogs:</p>
+          <Link
+            to="/blogs/new"
+            className="bg-black hover:bg-gray-700 text-white py-1 px-3 rounded font-light"
+          >
+            Add New +
+          </Link>
+        </div>
+        <BlogList
+          data={data}
+          isFetching={isFetching}
+          isLoading={isLoading}
+          isError={isError}
+          page={page}
+          setPage={setPage}
+        />
       </div>
-      <BlogList
-        data={data}
-        isFetching={isFetching}
-        isLoading={isLoading}
-        isError={isError}
-        page={page}
-        setPage={setPage}
-      />
-    </div>
+    </Container>
   );
 };
 export default MyAccount;

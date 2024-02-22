@@ -41,7 +41,7 @@ const Dropdown: FC<DropdownProps> = ({
   }, []);
 
   return (
-    <div ref={dropdownRef} className="w-[150px] relative">
+    <div ref={dropdownRef} className="w-full md:w-[150px] relative">
       <button
         onClick={() => setIsOpen((open) => !open)}
         className="w-full flex items-center justify-between bg-white border border-gray-300 rounded-md px-4 py-2 text-sm leading-5 text-gray-700 shadow-sm focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300"

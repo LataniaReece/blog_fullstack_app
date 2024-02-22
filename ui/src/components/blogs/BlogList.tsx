@@ -9,7 +9,6 @@ import { BlogsResponse } from "../../services/blogApi";
 import { Blog } from "../../types/blogTypes";
 import PageLoader from "../PageLoader";
 import Spinner from "../Spinner";
-import Container from "../Container";
 
 interface BlogListProps {
   data: BlogsResponse | undefined;
@@ -80,44 +79,42 @@ const BlogList: FC<BlogListProps> = ({
   };
 
   return (
-    <Container>
-      <InfiniteScroll
-        dataLength={allBlogs.length}
-        next={fetchNextPage}
-        hasMore={data?.hasNextPage || false}
-        loader={<Spinner />}
-      >
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 pb-10">
-          {allBlogs.map((blog) => (
-            <motion.div
-              className="md:max-w-sm rounded overflow-hidden shadow-lg flex flex-col h-full hover:scale-105 hover:cursor-pointer hover:underline transition-transform duration-200" // ensure the card itself has a full height
-              key={blog.id}
-              variants={fadeIn}
-              initial="hidden"
-              animate="visible"
-            >
-              <Link to={`/blogs/${blog.id}`} className="flex flex-col h-full">
-                <img
-                  className="w-full"
-                  src={blog.imageUrl || "https://via.placeholder.com/200"}
-                  alt={blog.title}
-                />
-                <div className="px-3 md:px-6 py-4 flex-grow">
-                  <div className="font-bold  md:text-xl md:mb-2">
-                    {blog.title}
-                  </div>
+    <InfiniteScroll
+      dataLength={allBlogs.length}
+      next={fetchNextPage}
+      hasMore={data?.hasNextPage || false}
+      loader={<Spinner />}
+    >
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 pb-10">
+        {allBlogs.map((blog) => (
+          <motion.div
+            className="md:max-w-sm rounded overflow-hidden shadow-lg flex flex-col h-full hover:scale-105 hover:cursor-pointer hover:underline transition-transform duration-200" // ensure the card itself has a full height
+            key={blog.id}
+            variants={fadeIn}
+            initial="hidden"
+            animate="visible"
+          >
+            <Link to={`/blogs/${blog.id}`} className="flex flex-col h-full">
+              <img
+                className="w-full"
+                src={blog.imageUrl || "https://via.placeholder.com/200"}
+                alt={blog.title}
+              />
+              <div className="px-3 md:px-6 py-4 flex-grow">
+                <div className="font-bold  md:text-xl md:mb-2">
+                  {blog.title}
                 </div>
-                <div className="px-3 md:px-6 pt-4 pb-5 flex-shrink-0">
-                  <button className="bg-transparent hover:bg-black text-black font-semibold hover:text-white py-1 px-3 border border-black hover:border-transparent rounded-full">
-                    See Blog
-                  </button>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </InfiniteScroll>
-    </Container>
+              </div>
+              <div className="px-3 md:px-6 pt-4 pb-5 flex-shrink-0">
+                <button className="bg-transparent hover:bg-black text-black font-semibold hover:text-white py-1 px-3 border border-black hover:border-transparent rounded-full">
+                  See Blog
+                </button>
+              </div>
+            </Link>
+          </motion.div>
+        ))}
+      </div>
+    </InfiniteScroll>
   );
 };
 export default BlogList;

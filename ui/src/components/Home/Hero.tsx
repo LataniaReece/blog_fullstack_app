@@ -1,11 +1,11 @@
 import { FC, Fragment, ReactNode, useEffect, useState } from "react";
-import { useGetFeaturedBlogsQuery } from "../../services/blogApi";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
 import { CiWarning } from "react-icons/ci";
-import Container from "../Container";
+
+import { useGetFeaturedBlogsQuery } from "../../services/blogApi";
 
 const Hero: FC = () => {
   const [loadedImages, setLoadedImages] = useState({});
@@ -156,13 +156,9 @@ interface HeroWrapperProps {
 
 const HeroWrapper: FC<HeroWrapperProps> = ({ children }) => (
   <div className="bg-black h-1/2 text-white text-center pb-7 min-h-[750px]">
-    <Container>
-      <>
-        <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[8rem] xl:text-[10rem] mb-2">
-          Lifestyle Blog
-        </h1>
-        {children}
-      </>
-    </Container>
+    <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[8rem] xl:text-[10rem] mb-2">
+      Lifestyle Blog
+    </h1>
+    {children}
   </div>
 );

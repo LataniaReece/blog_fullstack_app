@@ -101,10 +101,10 @@ const BlogDetail = () => {
         />
       </div>
       <Container>
-        <div className="my-7 px-5">
+        <div className="my-7">
           <div>
-            <div className="flex justify-between items-center mb-2">
-              <div>
+            <div className="flex flex-col justify-between md:flex-row md:items-center mb-2">
+              <div className="order-2 md:order-1">
                 <p className="text-gray-500">
                   {format(blog.updatedAt, "MMMM dd, yyyy")}
                 </p>
@@ -123,7 +123,7 @@ const BlogDetail = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 order-1 md:order-2 mb-2 md:mb-0">
                 {userId === blog.author.id && (
                   <Link
                     to={`/blogs/update/${blog.id}`}
