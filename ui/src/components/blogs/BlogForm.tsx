@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { IoClose } from "react-icons/io5";
 
 import BlogEditor from "./BlogEditor";
-import PageLoader from "../../components/PageLoader";
+import DataLoader from "../../components/DataLoader";
 import Spinner from "../Spinner";
 import { categories } from "../../utils/constants";
 
@@ -78,7 +78,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
   }, [imagePreviewUrl]);
 
   if (isLoadingFetchBlog) {
-    return <PageLoader text="Loading blog..." />;
+    return <DataLoader text="Loading blog..." />;
   }
 
   if (isUpdateMode && (!data || !data.blog || isError)) {

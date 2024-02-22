@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { CiWarning } from "react-icons/ci";
 
 import { useGetFeaturedBlogsQuery } from "../../services/blogApi";
+import { MdErrorOutline } from "react-icons/md";
 
 const Hero: FC = () => {
   const [loadedImages, setLoadedImages] = useState({});
@@ -56,8 +57,11 @@ const Hero: FC = () => {
   if (isError) {
     return (
       <HeroWrapper>
-        <div className="flex justify-center">
-          <p className="text-3xl">Error fetching blogs. Please try again.</p>
+        <div className="flex justify-center text-center">
+          <p className="text-xl md:text-2xl flex flex-col items-center text-rose-700">
+            <MdErrorOutline size={30} />
+            Error fetching blogs. Please try again.
+          </p>
         </div>
       </HeroWrapper>
     );

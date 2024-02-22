@@ -9,7 +9,7 @@ import {
   useDeleteBlogMutation,
   useGetBlogByIdQuery,
 } from "../services/blogApi";
-import PageLoader from "../components/PageLoader";
+import DataLoader from "../components/DataLoader";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import Spinner from "../components/Spinner";
@@ -54,7 +54,7 @@ const BlogDetail = () => {
   }, [isSuccessDelete, navigate, isErrorDelete, deleteError]);
 
   if (isLoading) {
-    return <PageLoader text="Loading blog..." />;
+    return <DataLoader text="Loading blog..." />;
   }
 
   if (!data || !data.blog || isError) {

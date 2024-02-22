@@ -173,7 +173,7 @@ const BlogSearch: FC = () => {
         {isCurrentSearch && (
           <>
             <h1 className="text-2xl mt-5 font-semibold">
-              {totalBlogs}
+              {totalBlogs || 0}
               <span className="font-light text-gray-500">
                 &nbsp;Result{totalBlogs == 1 ? "" : "s"} Found:&nbsp;
               </span>

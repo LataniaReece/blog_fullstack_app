@@ -13,6 +13,7 @@ const BlogSearch = lazy(() => import("./pages/BlogSearch"));
 
 import Navbar from "./components/Navbar";
 import { RootState } from "./store";
+import PageLoader from "./components/PageLoader";
 
 interface LayoutProps {
   children: ReactNode;
@@ -44,7 +45,7 @@ const AuthRoute: FC<AuthRouteProps> = ({ children }) => {
 };
 const Routes: FC = () => {
   return (
-    <Suspense fallback={<div className="h-full w-full">Loading...</div>}>
+    <Suspense fallback={<PageLoader />}>
       <RouterRoutes>
         <Route
           path="/login"

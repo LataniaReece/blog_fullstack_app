@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { CiWarning } from "react-icons/ci";
 import isEqual from "lodash/isEqual";
+import { MdErrorOutline } from "react-icons/md";
 
 import { BlogsResponse } from "../../services/blogApi";
 import { Blog } from "../../types/blogTypes";
-import PageLoader from "../PageLoader";
+import DataLoader from "../DataLoader";
 import Spinner from "../Spinner";
 
 interface BlogListProps {
@@ -53,13 +54,16 @@ const BlogList: FC<BlogListProps> = ({
   }, []);
 
   if (isLoading) {
-    return <PageLoader text="Loading Blogs..." />;
+    return <DataLoader text="Loading Blogs..." />;
   }
 
   if (isError) {
     return (
-      <div className="flex justify-center">
-        <p className="text-3xl">Error fetching blogs. Please try again.</p>
+      <div className="flex justify-center text-center">
+        <p className="text-xl md:text-2xl flex flex-col items-center text-rose-700">
+          <MdErrorOutline size={30} />
+          Error fetching blogs. Please try again.
+        </p>{" "}
       </div>
     );
   }

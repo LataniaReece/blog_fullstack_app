@@ -1,6 +1,6 @@
 export const extractErrorMessage = (
   error: unknown,
-  defaultMessage: string = "An unexpected error occurred"
+  defaultMessage: string = "An unexpected error occurred. Please try again later."
 ): string => {
   if (error instanceof Error) {
     return error.message;
