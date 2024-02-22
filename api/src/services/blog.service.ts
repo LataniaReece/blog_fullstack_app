@@ -53,7 +53,9 @@ export const getBlogs = async (
     take: limit,
   });
 
-  const totalBlogs = await prisma.blog.count();
+  const totalBlogs = await prisma.blog.count({
+    where: searchCriteria,
+  });
   const totalPages = Math.ceil(totalBlogs / limit);
   const hasNextPage = page < totalPages;
 

@@ -40,7 +40,6 @@ const MyAccount = () => {
         isError={isError}
         page={page}
         setPage={setPage}
-        isHomePage={false}
       />
     </div>
   );

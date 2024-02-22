@@ -1,15 +1,18 @@
 import { useState, useEffect, FC, useMemo, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
-import classNames from "classnames";
+import { BiSolidCategory } from "react-icons/bi";
+import { FaUser } from "react-icons/fa";
+import { IoIosSearch } from "react-icons/io";
 
 import BlogList from "../components/blogs/BlogList";
-import UsersDropdown from "../components/blogs/UsersDropdown";
+import Dropdown from "../components/blogs/Dropdown";
 import {
   useGetBlogsQuery,
   useGetUsersWithBlogsQuery,
 } from "../services/blogApi";
 import { categories } from "../utils/constants";
+import Container from "../components/Container";
 
 const BlogSearch: FC = () => {
   const location = useLocation();
@@ -48,6 +51,11 @@ const BlogSearch: FC = () => {
     isLoading: usersIsLoading,
     isError: usersIsError,
   } = useGetUsersWithBlogsQuery();
+
+  const isCurrentSearch =
+    searchParamsQuery.authorName ||
+    searchParamsQuery.category ||
+    searchParamsQuery.keyword;
 
   const debouncedUpdate = useMemo(
     () =>
@@ -101,94 +109,95 @@ const BlogSearch: FC = () => {
     setKeywordInputValue("");
   }, []);
 
-  const users = usersData?.users;
+  const clearFilters = () => {
+    setSearchParamsQuery({
+      category: "",
+      authorName: "",
+      keyword: "",
+    });
+    setKeywordInputValue("");
+  };
+
+  const users = usersData?.users.map((user) => user.username);
+  const totalBlogs = data?.totalBlogs;
 
   return (
-    <div className="container mx-auto mt-4">
-      <h1 className="text-2xl mb-2 font-bold">
-        Blog Search Results:&nbsp;
-        <span className="capitalize italic text-gray-500 font-normal">
-          {searchParamsQuery.authorName ||
-            searchParamsQuery.category ||
-            searchParamsQuery.keyword}
-        </span>
-      </h1>
-      <form className="mt-4">
-        <label
-          htmlFor="search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-        >
-          Search
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg
-              className="w-4 h-4 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+    <Container>
+      <div className="my-10">
+        {/* Filters Start */}
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center gap-4 md:flex-row">
+            <form>
+              <div className="relative">
+                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <IoIosSearch />
+                </div>
+                <input
+                  type="search"
+                  id="search"
+                  className="block px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50  focus:border-blue-300 focus:outline-none"
+                  placeholder="Search Blogs"
+                  value={keywordInputValue}
+                  onChange={(e) => setKeywordInputValue(e.target.value)}
+                />
+              </div>
+            </form>
+            <Dropdown
+              items={categories}
+              selectedItem={searchParamsQuery.category}
+              handleSelectItem={handleCategoryClick}
+              placeholder="Categories"
+              Icon={<BiSolidCategory />}
+            />
+            {users && (
+              <Dropdown
+                items={users}
+                selectedItem={searchParamsQuery.authorName}
+                handleSelectItem={handleSelectUser}
+                placeholder="Users"
+                Icon={<FaUser />}
               />
-            </svg>
+            )}
           </div>
-          <input
-            type="search"
-            id="search"
-            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50  focus:border-blue-300 focus:border-2 focus:outline-none"
-            placeholder="Search"
-            value={keywordInputValue}
-            onChange={(e) => setKeywordInputValue(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="text-white absolute end-2.5 bottom-2.5 bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
-          >
-            Search
-          </button>
+          {isCurrentSearch && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="underline cursor-pointer hover:no-underline hover:text-slate-500"
+            >
+              Clear Filters
+            </button>
+          )}
         </div>
-      </form>
-      <div className="mt-3 flex gap-2 items-center">
-        <p>Search By Category: </p>
-        {categories.map((category) => (
-          <button
-            key={category}
-            type="button"
-            className={classNames(" rounded-full text-sm px-3 py-1", {
-              "bg-gray-800 text-white hover:bg-gray-600":
-                searchParamsQuery.category === category,
-              "text-black border border-black hover:bg-gray-600 hover:text-white":
-                searchParamsQuery.category !== category,
-            })}
-            onClick={() => handleCategoryClick(category)}
-          >
-            {category}
-          </button>
-        ))}
+        {/* Filters End*/}
+        {isCurrentSearch && (
+          <>
+            <h1 className="text-2xl mt-5 font-semibold">
+              {totalBlogs}
+              <span className="font-light text-gray-500">
+                &nbsp;Result{totalBlogs == 1 ? "" : "s"} Found:&nbsp;
+              </span>
+            </h1>
+            <p className="capitalize font-light text-gray-500 text-sm">
+              <span className="text-black font-semibold">for</span>&nbsp;
+              {searchParamsQuery.authorName ||
+                searchParamsQuery.category ||
+                searchParamsQuery.keyword}
+            </p>
+          </>
+        )}
+        <div className="mt-5">
+          <BlogList
+            data={data}
+            isLoading={isLoading || usersIsLoading}
+            isFetching={isFetching}
+            isError={isError || usersIsError}
+            page={page}
+            setPage={setPage}
+          />
+        </div>
       </div>
-      <UsersDropdown
-        users={users}
-        handleSelectUser={handleSelectUser}
-        searchParamsQuery={searchParamsQuery}
-      />
-      <div className="mt-10">
-        <BlogList
-          data={data}
-          isLoading={isLoading || usersIsLoading}
-          isFetching={isFetching}
-          isError={isError || usersIsError}
-          page={page}
-          setPage={setPage}
-          isHomePage={false}
-        />
-      </div>
-    </div>
+    </Container>
   );
 };
 

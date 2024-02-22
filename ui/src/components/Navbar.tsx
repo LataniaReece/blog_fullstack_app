@@ -33,6 +33,12 @@ const Navbar: FC = () => {
             <img src={logo} className="h-8 w-8 rounded-full" />
             Lifestyle Blogs
           </Link>
+          <Link
+            to="/blogs/search"
+            className="hover:underline flex items-center gap-2"
+          >
+            Search
+          </Link>
         </div>
         <div className="flex space-x-4">
           {id ? (

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
 import { CiWarning } from "react-icons/ci";
+import Container from "../Container";
 
 const Hero: FC = () => {
   const [loadedImages, setLoadedImages] = useState({});
@@ -79,7 +80,7 @@ const Hero: FC = () => {
   return (
     <HeroWrapper>
       <>
-        <div className="px-4 text-left">
+        <div className="text-left">
           <motion.div
             className="flex flex-col lg:flex-row lg:gap-6 w-full"
             initial="hidden"
@@ -155,11 +156,13 @@ interface HeroWrapperProps {
 
 const HeroWrapper: FC<HeroWrapperProps> = ({ children }) => (
   <div className="bg-black h-1/2 text-white text-center pb-7 min-h-[750px]">
-    <div className="container mx-auto">
-      <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[8rem] xl:text-[10rem] mb-2">
-        Lifestyle Blog
-      </h1>
-      {children}
-    </div>
+    <Container>
+      <>
+        <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[8rem] xl:text-[10rem] mb-2">
+          Lifestyle Blog
+        </h1>
+        {children}
+      </>
+    </Container>
   </div>
 );

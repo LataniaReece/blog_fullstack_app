@@ -13,6 +13,7 @@ import PageLoader from "../components/PageLoader";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import Spinner from "../components/Spinner";
+import Container from "../components/Container";
 
 const BlogDetail = () => {
   const { id: blogId } = useParams();
@@ -99,69 +100,74 @@ const BlogDetail = () => {
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="container mx-auto my-7 px-5">
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <div>
-              <p className="text-gray-500">
-                {format(blog.updatedAt, "MMMM dd, yyyy")}
-              </p>
+      <Container>
+        <div className="my-7 px-5">
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <div>
+                <p className="text-gray-500">
+                  {format(blog.updatedAt, "MMMM dd, yyyy")}
+                </p>
+                <div className="flex gap-2">
+                  {blog.categories.split(",").map((category) => (
+                    <button
+                      type="button"
+                      key={category}
+                      className="text-gray-500 font-light text-xs uppercase mt-2 underline hover:text-gray-400"
+                      onClick={() =>
+                        handleNavigateToSearch("category", category.trim())
+                      }
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <div className="flex gap-2">
-                {blog.categories.split(",").map((category) => (
+                {userId === blog.author.id && (
+                  <Link
+                    to={`/blogs/update/${blog.id}`}
+                    className="bg-black hover:bg-gray-600 text-white text-xs lg:text-sm font-semibold py-1 px-2 border border-black hover:border-transparent rounded"
+                  >
+                    Update Blog
+                  </Link>
+                )}
+                {userId === blog.author.id && (
                   <button
                     type="button"
-                    key={category}
-                    className="text-gray-500 font-light text-xs uppercase mt-2 underline hover:text-gray-400"
-                    onClick={() =>
-                      handleNavigateToSearch("category", category.trim())
-                    }
+                    onClick={handleDelete}
+                    className="bg-red-700 hover:bg-red-500 text-white text-xs lg:text-sm font-semibold py-1 px-2 border border-red-700 hover:border-transparent rounded"
                   >
-                    {category}
+                    {isLoadingDelete ? <Spinner /> : "Delete Blog"}
                   </button>
-                ))}
+                )}
+                <Link
+                  to="/"
+                  className="bg-transparent hover:bg-black text-black text-xs lg:text-sm font-semibold hover:text-white py-1 px-2 border border-black hover:border-transparent rounded"
+                >
+                  Go back
+                </Link>
               </div>
             </div>
-            <div className="flex gap-2">
-              {userId === blog.author.id && (
-                <Link
-                  to={`/blogs/update/${blog.id}`}
-                  className="bg-black hover:bg-gray-600 text-white text-xs lg:text-sm font-semibold py-1 px-2 border border-black hover:border-transparent rounded"
-                >
-                  Update Blog
-                </Link>
-              )}
-              {userId === blog.author.id && (
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  className="bg-red-700 hover:bg-red-500 text-white text-xs lg:text-sm font-semibold py-1 px-2 border border-red-700 hover:border-transparent rounded"
-                >
-                  {isLoadingDelete ? <Spinner /> : "Delete Blog"}
-                </button>
-              )}
-              <Link
-                to="/"
-                className="bg-transparent hover:bg-black text-black text-xs lg:text-sm font-semibold hover:text-white py-1 px-2 border border-black hover:border-transparent rounded"
-              >
-                Go back
-              </Link>
-            </div>
+            <h2 className="text-2xl font-bold rounded">{blog.title}</h2>
+            <button
+              onClick={() =>
+                handleNavigateToSearch(
+                  "authorName",
+                  blog.author.username.trim()
+                )
+              }
+              className="capitalize font-bold text-gray-600 underline hover:text-gray-400"
+            >
+              By: {blog.author.username}
+            </button>
           </div>
-          <h2 className="text-2xl font-bold rounded">{blog.title}</h2>
-          <button
-            onClick={() =>
-              handleNavigateToSearch("authorName", blog.author.username.trim())
-            }
-            className="capitalize font-bold text-gray-600 underline hover:text-gray-400"
-          >
-            By: {blog.author.username}
-          </button>
-        </div>
 
-        <div className="py-2 rounded">
-          <p dangerouslySetInnerHTML={sanitizeHTML(blog.content)} />
+          <div className="py-2 rounded">
+            <p dangerouslySetInnerHTML={sanitizeHTML(blog.content)} />
+          </div>
         </div>
-      </div>
+      </Container>
     </motion.div>
   );
 };

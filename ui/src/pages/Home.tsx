@@ -22,7 +22,6 @@ const Home: FC = () => {
           isError={isError}
           page={page}
           setPage={setPage}
-          isHomePage={true}
         />
       </div>
     </>
