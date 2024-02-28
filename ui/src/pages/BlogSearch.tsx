@@ -126,8 +126,11 @@ const BlogSearch: FC = () => {
       <div className="my-10">
         {/* Filters Start */}
         <div className="flex flex-col justify-start md:flex-row md:items-center md:justify-between">
-          <div className="w-full flex flex-col items-center gap-4 md:flex-row md:w-auto">
-            <form className="w-full md:w-auto">
+          <div className="w-full flex flex-col items-center gap-4 md:flex-row md:w-full lg:w-auto">
+            <form
+              className="w-full md:w-auto"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                   <IoIosSearch />
@@ -154,7 +157,7 @@ const BlogSearch: FC = () => {
                 items={users}
                 selectedItem={searchParamsQuery.authorName}
                 handleSelectItem={handleSelectUser}
-                placeholder="Users"
+                placeholder="Authors"
                 Icon={<FaUser />}
               />
             )}

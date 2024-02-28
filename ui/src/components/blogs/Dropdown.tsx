@@ -41,22 +41,27 @@ const Dropdown: FC<DropdownProps> = ({
   }, []);
 
   return (
-    <div ref={dropdownRef} className="w-full md:w-[150px] relative">
+    <div ref={dropdownRef} className="w-full lg:w-[200px] relative">
       <button
         onClick={() => setIsOpen((open) => !open)}
         className="w-full flex items-center justify-between bg-white border border-gray-300 rounded-md px-4 py-2 text-sm leading-5 text-gray-700 shadow-sm focus:outline-none focus:border-blue-300 focus:ring-1 focus:ring-blue-300"
       >
-        <div className="flex items-center gap-1">
-          {Icon}
-          <span className="capitalize">{selectedItem || placeholder}</span>
+        <div className="flex items-center gap-1 overflow-hidden ">
+          <div className="flex-shrink-0 mr-1">{Icon}</div>
+          <div className=" min-w-0">
+            <span className="block overflow-hidden truncate capitalize">
+              {selectedItem || placeholder}
+            </span>
+          </div>
         </div>
-        <RxCaretDown
-          className={`h-4 w-4 ml-2 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
+        <div className="flex-shrink-0">
+          <RxCaretDown
+            className={`h-6 w-6 transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </div>
       </button>
-
       {isOpen && (
         <ul className="absolute w-full mt-1 bg-white rounded-md shadow-lg max-h-60 overflow-auto z-10">
           {items.map((item) => (
