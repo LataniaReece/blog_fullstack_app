@@ -127,7 +127,7 @@ const BlogDetail = () => {
                 {userId === blog.author.id && (
                   <Link
                     to={`/blogs/update/${blog.id}`}
-                    className="bg-black hover:bg-gray-600 text-white text-xs lg:text-sm font-semibold py-1 px-2 border border-black hover:border-transparent rounded"
+                    className="bg-black hover:bg-custom-blue text-white text-xs lg:text-sm font-semibold p-2 border border-black hover:border-transparent rounded"
                   >
                     Update Blog
                   </Link>
@@ -136,14 +136,14 @@ const BlogDetail = () => {
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="bg-red-700 hover:bg-red-500 text-white text-xs lg:text-sm font-semibold py-1 px-2 border border-red-700 hover:border-transparent rounded"
+                    className="bg-custom-red hover:bg-custom-red-hover text-white text-xs lg:text-sm font-semibold p-2 border border-red-700 hover:border-transparent rounded"
                   >
                     {isLoadingDelete ? <Spinner /> : "Delete Blog"}
                   </button>
                 )}
                 <Link
                   to="/"
-                  className="bg-transparent hover:bg-black text-black text-xs lg:text-sm font-semibold hover:text-white py-1 px-2 border border-black hover:border-transparent rounded"
+                  className="bg-transparent hover:bg-black text-black text-xs lg:text-sm font-semibold hover:text-white p-2 border border-black hover:border-transparent rounded"
                 >
                   Go back
                 </Link>

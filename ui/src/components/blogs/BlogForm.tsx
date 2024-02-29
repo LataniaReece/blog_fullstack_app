@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   useGetBlogByIdQuery,
   useCreateBlogMutation,
@@ -13,6 +13,8 @@ import BlogEditor from "./BlogEditor";
 import DataLoader from "../../components/DataLoader";
 import Spinner from "../Spinner";
 import { categories } from "../../utils/constants";
+
+import placeholderImg from "../../images/placeholder-blog-img.png";
 
 interface BlogFormProps {
   mode: "create" | "update";
@@ -239,11 +241,9 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
         </div>
         <div className="mt-[100px] md:mt-14 mb-4">
           <img
-            src={
-              imagePreviewUrl || imageUrl || "https://via.placeholder.com/200"
-            }
+            src={imagePreviewUrl || imageUrl || placeholderImg}
             alt="Preview"
-            className="max-w-xs w-full h-[200px]"
+            className="max-w-xs w-full h-[200px] object-fill"
           />
         </div>
         <div className=" mb-3">
@@ -252,7 +252,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
           </label>
           <div className="flex items-center justify-start bg-white border rounded-lg overflow-hidden">
             <label
-              className="px-4 py-2 bg-black text-white cursor-pointer hover:bg-blue-500"
+              className="px-4 py-2 bg-black text-white cursor-pointer hover:bg-custom-blue"
               htmlFor="file_input"
             >
               Choose file
@@ -283,12 +283,18 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
         </div>
         {message && <p className="text-red-500">{message}</p>}
         {isError && <p className="text-red-500">{(error as Error).message}</p>}
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+          <Link
+            to={isUpdateMode ? `/blogs/${blog?.id}` : "/account"}
+            className="shadow bg-custom-red hover:bg-custom-red-hover focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto"
+          >
+            Cancel
+          </Link>
           <button
             className={classNames(
-              "shadow bg-black focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto",
+              "bg-custom-blue hover:bg-custom-blue-hover shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto",
               {
-                "hover:bg-gray-700": !isLoadingFormSubmit,
+                "hover:bg-custom-blue-hover ": !isLoadingFormSubmit,
                 "opacity-50 cursor-not-allowed": isLoadingFormSubmit,
               }
             )}

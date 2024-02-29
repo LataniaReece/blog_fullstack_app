@@ -49,7 +49,12 @@ const Navbar: FC = () => {
         <div className="flex space-x-4">
           {id ? (
             <>
-              <button onClick={() => handleLogout()}>Logout</button>
+              <button
+                className="hover:underline"
+                onClick={() => handleLogout()}
+              >
+                Logout
+              </button>
               <Link to="/account" className="hover:underline capitalize">
                 {`${username}'s Account`}
               </Link>
@@ -126,7 +131,12 @@ const Navbar: FC = () => {
                   >
                     {`${username}'s Account`}
                   </button>
-                  <button onClick={() => handleLogout()}>Logout</button>
+                  <button
+                    className="hover:underline"
+                    onClick={() => handleLogout()}
+                  >
+                    Logout
+                  </button>
                 </>
               ) : (
                 <>

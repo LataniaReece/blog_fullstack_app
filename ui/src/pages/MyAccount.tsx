@@ -30,7 +30,7 @@ const MyAccount = () => {
           <p className="text-2xl font-semibold">Your Blogs:</p>
           <Link
             to="/blogs/new"
-            className="bg-black hover:bg-gray-700 text-white py-1 px-3 rounded font-light"
+            className="bg-black hover:bg-custom-blue text-white text-xs lg:text-sm font-semibold p-2 border border-black hover:border-transparent rounded"
           >
             Add New +
           </Link>
