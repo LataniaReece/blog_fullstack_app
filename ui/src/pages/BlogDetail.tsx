@@ -16,11 +16,14 @@ import Spinner from "../components/Spinner";
 import Container from "../components/Container";
 
 import placeholderImg from "../images/placeholder-blog-img.png";
+import BlogNotFound from "../components/blogs/BlogNotFound";
 
 const BlogDetail = () => {
   const { id: blogId } = useParams();
   const navigate = useNavigate();
-  const { data, isLoading, isError } = useGetBlogByIdQuery({ id: `${blogId}` });
+  const { data, isLoading, isError, error } = useGetBlogByIdQuery({
+    id: `${blogId}`,
+  });
 
   const [
     deleteBlog,
@@ -60,7 +63,7 @@ const BlogDetail = () => {
   }
 
   if (!data || !data.blog || isError) {
-    return <p>Error loading the blog.</p>;
+    return <BlogNotFound error={error} />;
   }
 
   const blog = data.blog;
