@@ -136,7 +136,7 @@ const BlogDetail = () => {
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="bg-custom-red hover:bg-custom-red-hover text-white text-xs lg:text-sm font-semibold p-2 border border-red-700 hover:border-transparent rounded"
+                    className="bg-custom-red hover:bg-custom-red-hover text-white text-xs lg:text-sm font-semibold p-2 border border-red-700 hover:border-transparent rounded md:min-w-[80px]"
                   >
                     {isLoadingDelete ? <Spinner /> : "Delete Blog"}
                   </button>

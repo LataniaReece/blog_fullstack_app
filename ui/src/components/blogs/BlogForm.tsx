@@ -281,8 +281,22 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
           </div>
           <p className="mt-1 text-sm text-gray-500">SVG, PNG, or JPG.</p>
         </div>
-        {message && <p className="text-red-500">{message}</p>}
-        {isError && <p className="text-red-500">{(error as Error).message}</p>}
+        {message && (
+          <p
+            className="bg-custom-red-alert-bg border border-custom-red-alert-text text-custom-red-alert-text px-4 py-3 rounded relative mb-3"
+            role="alert"
+          >
+            {message}
+          </p>
+        )}
+        {isError && (
+          <p
+            className="bg-custom-red-alert-bg border border-custom-red-alert-text text-custom-red-alert-text px-4 py-3 rounded relative mb-3"
+            role="alert"
+          >
+            {(error as Error).message}
+          </p>
+        )}
         <div className="flex justify-end gap-2">
           <Link
             to={isUpdateMode ? `/blogs/${blog?.id}` : "/account"}
@@ -292,7 +306,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
           </Link>
           <button
             className={classNames(
-              "bg-custom-blue hover:bg-custom-blue-hover shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto",
+              "bg-custom-blue hover:bg-custom-blue-hover shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto md:min-w-[80px]",
               {
                 "hover:bg-custom-blue-hover ": !isLoadingFormSubmit,
                 "opacity-50 cursor-not-allowed": isLoadingFormSubmit,

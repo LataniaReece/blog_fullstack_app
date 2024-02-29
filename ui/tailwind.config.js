@@ -6,6 +6,8 @@ export default {
       colors: {
         "custom-red": "#983628",
         "custom-red-hover": "#83251f",
+        "custom-red-alert-bg": "#EEC5BE",
+        "custom-red-alert-text": "#CE4F3B",
         "custom-blue": "#1C324A",
         "custom-blue-hover": "#274668",
       },
