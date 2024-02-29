@@ -142,7 +142,10 @@ const Register: FC = () => {
           </div>
 
           {errorMessage && (
-            <div className={errorMessageStyle} role="alert">
+            <div
+              className="bg-custom-red-alert-bg border border-custom-red-alert-text text-custom-red-alert-text px-4 py-3 rounded relative mb-3"
+              role="alert"
+            >
               <p>{errorMessage}</p>
             </div>
           )}

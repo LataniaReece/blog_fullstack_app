@@ -14,6 +14,7 @@ const BlogSearch = lazy(() => import("./pages/BlogSearch"));
 import Navbar from "./components/Navbar";
 import { RootState } from "./store";
 import PageLoader from "./components/PageLoader";
+import NotFound from "./pages/NotFound";
 
 interface LayoutProps {
   children: ReactNode;
@@ -117,7 +118,14 @@ const Routes: FC = () => {
             </MainLayout>
           }
         />
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route
+          path="*"
+          element={
+            <MainLayout>
+              <NotFound />
+            </MainLayout>
+          }
+        />
       </RouterRoutes>
     </Suspense>
   );

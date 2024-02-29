@@ -11,6 +11,8 @@ import { Blog } from "../../types/blogTypes";
 import DataLoader from "../DataLoader";
 import Spinner from "../Spinner";
 
+import placeholderImg from "../../images/placeholder-blog-img.png";
+
 interface BlogListProps {
   data: BlogsResponse | undefined;
   isLoading: boolean;
@@ -101,7 +103,7 @@ const BlogList: FC<BlogListProps> = ({
             <Link to={`/blogs/${blog.id}`} className="flex flex-col h-full">
               <img
                 className="w-full"
-                src={blog.imageUrl || "https://via.placeholder.com/200"}
+                src={blog.imageUrl || placeholderImg}
                 alt={blog.title}
               />
               <div className="px-3 md:px-6 py-4 flex-grow">

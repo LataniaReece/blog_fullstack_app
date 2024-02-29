@@ -15,6 +15,8 @@ import { RootState } from "../store";
 import Spinner from "../components/Spinner";
 import Container from "../components/Container";
 
+import placeholderImg from "../images/placeholder-blog-img.png";
+
 const BlogDetail = () => {
   const { id: blogId } = useParams();
   const navigate = useNavigate();
@@ -95,7 +97,7 @@ const BlogDetail = () => {
     >
       <div className="w-full h-[200px] md:h-[300px] lg:h-[400px] xl:h-[500px] overflow-hidden">
         <img
-          src={blog.imageUrl}
+          src={blog.imageUrl || placeholderImg}
           alt={blog.title}
           className="object-cover w-full h-full"
         />

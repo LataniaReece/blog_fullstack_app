@@ -11,6 +11,9 @@ export default {
         "custom-blue": "#1C324A",
         "custom-blue-hover": "#274668",
       },
+      backgroundImage: {
+        "not-found": "url(../src/images/not-found-bg.jpg)",
+      },
     },
   },
   plugins: [],
