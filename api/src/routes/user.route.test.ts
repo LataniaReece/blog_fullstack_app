@@ -1,7 +1,28 @@
 import request from "supertest";
-import truncateTables from "../utils/testdbCleanup";
-import prisma from "../utils/db";
 import createServer from "../app";
+import * as UserService from "../services/user.service";
+
+jest.mock("../services/user.service", () => {
+  return {
+    __esModule: true,
+    ...jest.requireActual("../services/user.service"),
+    createUser: jest.fn().mockResolvedValue({
+      user: { id: "1", username: "testuser" },
+      accessToken: "fake_access_token",
+      refreshToken: "fake_refresh_token",
+    }),
+    loginUser: jest.fn().mockResolvedValue({
+      user: { id: "1", username: "testuser" },
+      accessToken: "fake_access_token",
+      refreshToken: "fake_refresh_token",
+    }),
+    refreshToken: jest.fn().mockResolvedValue({
+      accessToken: "new_fake_access_token",
+    }),
+  };
+});
+
+const mockedUserService = UserService as jest.Mocked<typeof UserService>;
 
 const testUser = {
   username: "testuser",
@@ -13,40 +34,42 @@ const app = createServer();
 const server = app.listen(0, () => {});
 
 describe("User Routes", () => {
-  beforeEach(async () => {
-    await truncateTables();
-  });
-
-  afterAll((done) => {
-    prisma
-      .$disconnect()
-      .then(() => {
-        server.close(done);
-      })
-      .catch(done);
+  afterEach(() => {
+    jest.clearAllMocks();
+    server.close();
   });
 
   it("should register a new user", async () => {
     const response = await request(app)
       .post("/api/auth/register")
-      .send({ username: testUser.username, password: testUser.password });
+      .send({ username: "testuser", password: "testpassword" });
 
     expect(response.statusCode).toBe(201);
-    expect(response.body.user).toBeDefined();
-    expect(response.body.user.username).toEqual(testUser.username);
-    expect(response.body).toHaveProperty("accessToken");
+    expect(response.body.user.username).toEqual("testuser");
+    expect(mockedUserService.createUser).toHaveBeenCalledWith({
+      username: "testuser",
+      password: "testpassword",
+    });
   });
 
   it("should login the user", async () => {
-    // First, register the user
     await request(app)
       .post("/api/auth/register")
       .send({ username: testUser.username, password: testUser.password });
+    expect(mockedUserService.createUser).toHaveBeenCalledWith({
+      username: "testuser",
+      password: "testpassword",
+    });
 
     // Then, attempt to log in
     const response = await request(app)
       .post("/api/auth/login")
       .send({ username: testUser.username, password: testUser.password });
+
+    expect(mockedUserService.loginUser).toHaveBeenCalledWith({
+      username: "testuser",
+      password: "testpassword",
+    });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.user).toBeDefined();
@@ -61,5 +84,35 @@ describe("User Routes", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBeDefined();
+  });
+
+  it("should refresh the access token using a refresh token from a cookie", async () => {
+    await request(app)
+      .post("/api/auth/register")
+      .send({ username: testUser.username, password: testUser.password });
+
+    const loginResponse = await request(app)
+      .post("/api/auth/login")
+      .send({ username: testUser.username, password: testUser.password });
+
+    const setCookieHeader = loginResponse.headers["set-cookie"];
+    const cookiesArray = Array.isArray(setCookieHeader)
+      ? setCookieHeader
+      : [setCookieHeader];
+    const refreshTokenCookie = cookiesArray.find((cookie) =>
+      cookie.startsWith("refreshToken=")
+    );
+
+    const refreshResponse = await request(app)
+      .post("/api/auth/refresh-token")
+      .set("Cookie", refreshTokenCookie);
+
+    expect(refreshResponse.statusCode).toBe(200);
+    expect(refreshResponse.body).toHaveProperty(
+      "accessToken",
+      "new_fake_access_token"
+    );
+
+    expect(UserService.refreshToken).toHaveBeenCalledWith(expect.any(String));
   });
 });
