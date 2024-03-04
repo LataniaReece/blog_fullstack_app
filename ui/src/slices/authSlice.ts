@@ -26,11 +26,6 @@ const authSlice = createSlice({
       localStorage.removeItem("username");
       window.location.replace("/");
     },
-    clearAccessToken: (state) => {
-      state.accessToken = null;
-      localStorage.removeItem("accessToken");
-      // Consider if you also want to clear userId and username here
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -59,5 +54,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearAccessToken, logUserOut } = authSlice.actions;
+export const { logUserOut } = authSlice.actions;
 export default authSlice.reducer;
