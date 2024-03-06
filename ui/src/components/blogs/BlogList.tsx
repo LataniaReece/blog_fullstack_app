@@ -91,7 +91,10 @@ const BlogList: FC<BlogListProps> = ({
       hasMore={data?.hasNextPage || false}
       loader={<Spinner />}
     >
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 pb-10">
+      <div
+        className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-8 pb-10"
+        data-testid="blog-list"
+      >
         {allBlogs.map((blog) => (
           <motion.div
             className="md:max-w-sm rounded overflow-hidden shadow-lg flex flex-col h-full hover:scale-105 hover:cursor-pointer hover:underline transition-transform duration-200" // ensure the card itself has a full height

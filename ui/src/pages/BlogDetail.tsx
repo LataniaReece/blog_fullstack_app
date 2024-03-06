@@ -114,18 +114,19 @@ const BlogDetail = () => {
                   {format(blog.updatedAt, "MMMM dd, yyyy")}
                 </p>
                 <div className="flex gap-2">
-                  {blog.categories.split(",").map((category) => (
-                    <button
-                      type="button"
-                      key={category}
-                      className="text-gray-500 font-light text-xs uppercase mt-2 underline hover:text-gray-400"
-                      onClick={() =>
-                        handleNavigateToSearch("category", category.trim())
-                      }
-                    >
-                      {category}
-                    </button>
-                  ))}
+                  {blog.categories &&
+                    blog.categories.split(",").map((category) => (
+                      <button
+                        type="button"
+                        key={category}
+                        className="text-gray-500 font-light text-xs uppercase mt-2 underline hover:text-gray-400"
+                        onClick={() =>
+                          handleNavigateToSearch("category", category.trim())
+                        }
+                      >
+                        {category}
+                      </button>
+                    ))}
                 </div>
               </div>
               <div className="flex gap-2 order-1 md:order-2 mb-2 md:mb-0">

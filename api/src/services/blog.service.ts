@@ -51,6 +51,11 @@ export const getBlogs = async (
     where: searchCriteria,
     skip,
     take: limit,
+    include: {
+      author: {
+        select: { id: true, username: true },
+      },
+    },
   });
 
   const totalBlogs = await prisma.blog.count({
@@ -90,6 +95,11 @@ export const getUserBlogs = async (userId: string, page = 1, limit = 10) => {
     },
     skip,
     take: limit,
+    include: {
+      author: {
+        select: { id: true, username: true },
+      },
+    },
   });
 
   const totalBlogs = await prisma.blog.count();

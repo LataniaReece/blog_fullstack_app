@@ -1,10 +1,9 @@
 export interface Blog {
   id: string;
   title: string;
-  description: string;
   featured: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   content: string;
   author: { username: string; id: string };
   categories: string;

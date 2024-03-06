@@ -10,7 +10,7 @@ interface BlogNotFoundProps {
 }
 
 const BlogNotFound: FC<BlogNotFoundProps> = ({ error }) => {
-  const isNotFoundError = error?.data?.message === "Blog not found";
+  const isNotFoundError = error?.data?.status === 404 || error.status === 404;
   return (
     <Container>
       <div className="flex flex-col items-center mt-20">
