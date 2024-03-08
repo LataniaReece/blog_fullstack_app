@@ -84,7 +84,12 @@ const Login: FC = () => {
               )}
             />
             {formik.errors.username && formik.touched.username && (
-              <p className={errorMessageStyle}>{formik.errors.username}</p>
+              <p
+                className={errorMessageStyle}
+                data-testid="login-username-input"
+              >
+                {formik.errors.username}
+              </p>
             )}
           </div>
           <div className="relative">
@@ -106,7 +111,12 @@ const Login: FC = () => {
               {showPassword ? "Hide" : "Show"}
             </button>
             {formik.errors.password && formik.touched.password && (
-              <p className={errorMessageStyle}>{formik.errors.password}</p>
+              <p
+                className={errorMessageStyle}
+                data-testid="login-password-input"
+              >
+                {formik.errors.password}
+              </p>
             )}
           </div>
 
@@ -128,6 +138,7 @@ const Login: FC = () => {
             <div
               className="bg-custom-red-alert-bg border border-custom-red-alert-text text-custom-red-alert-text px-4 py-3 rounded relative mb-3"
               role="alert"
+              data-testid="login-alert"
             >
               <p>{errorMessage}</p>
             </div>

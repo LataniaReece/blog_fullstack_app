@@ -122,7 +122,12 @@ const Register: FC = () => {
               )}
             />
             {formik.errors.password2 && formik.touched.password2 && (
-              <p className={errorMessageStyle}>{formik.errors.password2}</p>
+              <p
+                className={errorMessageStyle}
+                data-testid="register-password2-error"
+              >
+                {formik.errors.password2}
+              </p>
             )}
           </div>
 
@@ -145,8 +150,21 @@ const Register: FC = () => {
             <div
               className="bg-custom-red-alert-bg border border-custom-red-alert-text text-custom-red-alert-text px-4 py-3 rounded relative mb-3"
               role="alert"
+              data-testid="register-alert"
             >
-              <p>{errorMessage}</p>
+              {errorMessage === "User already exists." ? (
+                <p>
+                  User Already exists.
+                  <Link
+                    to="/login"
+                    className="text-black underline hover:no-underline"
+                  >
+                    Try logging in instead.
+                  </Link>
+                </p>
+              ) : (
+                <p>{errorMessage}</p>
+              )}
             </div>
           )}
 

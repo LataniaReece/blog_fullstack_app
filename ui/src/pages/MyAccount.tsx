@@ -27,7 +27,12 @@ const MyAccount = () => {
     <Container>
       <div className="mt-10">
         <div className="flex flex-col items-start justify-between mb-4 md:flex-row md:items-center">
-          <p className="text-2xl font-semibold">Your Blogs:</p>
+          <p
+            className="text-2xl font-semibold"
+            data-testid="account-page-heading"
+          >
+            Your Blogs:
+          </p>
           <Link
             to="/blogs/new"
             className="bg-black hover:bg-custom-blue text-white text-xs lg:text-sm font-semibold p-2 border border-black hover:border-transparent rounded"

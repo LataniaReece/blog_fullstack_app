@@ -9,6 +9,12 @@ interface UserCreateInput {
 }
 
 export const createUser = async ({ username, password }: UserCreateInput) => {
+  const existingUser = await prisma.user.findUnique({ where: { username } });
+
+  if (existingUser) {
+    throw new CustomError("User already exists.", 400);
+  }
+
   const hashedPassword = await hashPassword(password);
 
   const user = await prisma.user.create({

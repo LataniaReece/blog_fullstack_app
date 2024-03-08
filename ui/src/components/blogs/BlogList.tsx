@@ -102,6 +102,7 @@ const BlogList: FC<BlogListProps> = ({
             variants={fadeIn}
             initial="hidden"
             animate="visible"
+            data-testid={`blog-item-${blog.id}`}
           >
             <Link to={`/blogs/${blog.id}`} className="flex flex-col h-full">
               <img
@@ -110,7 +111,10 @@ const BlogList: FC<BlogListProps> = ({
                 alt={blog.title}
               />
               <div className="px-3 md:px-6 py-4 flex-grow">
-                <div className="font-bold  md:text-xl md:mb-2">
+                <div
+                  className="font-bold  md:text-xl md:mb-2"
+                  data-testid={`blog-item-${blog.id}-title`}
+                >
                   {blog.title}
                 </div>
               </div>

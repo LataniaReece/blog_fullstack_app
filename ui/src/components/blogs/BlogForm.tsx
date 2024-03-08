@@ -56,7 +56,9 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
     if (blog) {
       setTitle(blog.title);
       setContent(blog.content);
-      setSelectedCategories(blog.categories.split(","));
+      setSelectedCategories(
+        blog.categories.split(",").map((cat) => cat.trim())
+      );
       setImageUrl(blog.imageUrl);
     }
   }, [blog]);
@@ -120,11 +122,12 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
   };
 
   const toggleCategory = (category: string) => {
-    setSelectedCategories((prevCategories) =>
-      prevCategories.includes(category)
-        ? prevCategories.filter((c) => c !== category)
-        : [...prevCategories, category]
-    );
+    setSelectedCategories((prevCategories) => {
+      const trimmedCategory = category.trim();
+      return prevCategories.includes(trimmedCategory)
+        ? prevCategories.filter((c) => c.trim() !== trimmedCategory)
+        : [...prevCategories, trimmedCategory];
+    });
   };
 
   const clearFileInput = () => {
@@ -201,6 +204,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            data-testid="blog-form-title"
           />
         </div>
         <div className="my-2">
@@ -224,6 +228,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
                     }
                   )}
                   onClick={() => toggleCategory(category)}
+                  data-testid={`tag-${category}`}
                 >
                   {category}
                 </button>
@@ -285,6 +290,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
           <p
             className="bg-custom-red-alert-bg border border-custom-red-alert-text text-custom-red-alert-text px-4 py-3 rounded relative mb-3"
             role="alert"
+            data-testid="blog-form-alert"
           >
             {message}
           </p>
