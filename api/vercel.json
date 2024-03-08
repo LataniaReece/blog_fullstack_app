@@ -1,7 +1,5 @@
 {
   "functions": {
-    "src/index.js": {
-      "runtime": "nodejs20.x"
-    }
+    "src/index.js": {}
   }
 }
