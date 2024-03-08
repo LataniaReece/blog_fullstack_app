@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
+    "start": "node dist/src/index.js",
     "start:dev": "nodemon --files src/index.ts",
     "start:prod": "cross-env NODE_ENV=production node dist/index.ts",
     "migrate:dev": "npx prisma migrate dev --name",
