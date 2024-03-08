@@ -18,6 +18,11 @@ function createServer() {
   app.use(express.urlencoded({ extended: true }));
 
   // Routes
+
+  app.get("/", (req, res) => {
+    res.send("Welcome to the API");
+  });
+
   app.use("/api/auth", routes.userRoutes);
   app.use("/api/blogs", routes.blogRoutes);
 
