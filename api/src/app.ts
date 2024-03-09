@@ -7,17 +7,19 @@ import routes from "./routes";
 function createServer() {
   const app: Application = express();
 
-  const corsOptions = {
-    origin: process.env.FRONTEND_ORIGIN,
-    credentials: true,
-  };
+  app.use(
+    cors({
+      origin: process.env.FRONTEND_ORIGIN,
+      credentials: true,
+    })
+  );
 
-  app.use(cors(corsOptions));
   app.use((req, res, next) => {
-    console.log("Frontend Origin:", process.env.FRONTEND_ORIGIN);
-    console.log("Incoming Request Origin:", req.headers.origin);
+    res.header("Access-Control-Allow-Origin", process.env.FRONTEND_ORIGIN);
+    res.header("Access-Control-Allow-Credentials", "true");
     next();
   });
+
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
