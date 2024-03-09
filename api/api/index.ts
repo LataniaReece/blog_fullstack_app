@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import createServer from "./app";
+import createServer from "../src/app";
 
 const PORT: number = process.env.PORT ? +process.env.PORT : 8000;
 const MODE: string = process.env.NODE_ENV

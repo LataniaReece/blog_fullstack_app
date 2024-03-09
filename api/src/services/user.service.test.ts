@@ -1,4 +1,4 @@
-import { createUser } from "../services/user.service";
+import { createUser } from "./user.service";
 import db from "../utils/db";
 
 const testUser = {
