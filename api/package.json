@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "tsc",
-    "vercel-build": "echo hello",
+    "vercel-build": "prisma generate && npx ts-node prisma/seedDB.ts",
     "start": "node dist/api/index.js",
     "start:dev": "nodemon --files api/index.ts",
     "start:prod": "cross-env NODE_ENV=production node dist/api/index.js",
