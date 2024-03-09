@@ -1,22 +1,24 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+import { Request, Response } from "express";
 
 import createServer from "../src/app";
 
 const app = createServer();
 
+const PORT: number = process.env.PORT ? +process.env.PORT : 3000;
 const MODE: string = process.env.NODE_ENV
   ? process.env.NODE_ENV
   : "development";
 
-// In development, listen on a port. In production, do not.
+const handler = (req: Request, res: Response) => {
+  app(req, res);
+};
+
 if (MODE === "development") {
-  const PORT: number = process.env.PORT ? +process.env.PORT : 3000;
   app.listen(PORT, () => {
-    console.log(`Running in ${MODE} mode.`);
-    console.log(`Server is running on port ${PORT}.`);
+    console.log(`Running in ${MODE} mode on http://localhost:${PORT}`);
   });
-} else {
-  // For Vercel, export the app as a serverless function
-  module.exports = app;
 }
+
+export default handler;
