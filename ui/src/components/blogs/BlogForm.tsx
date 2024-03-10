@@ -306,7 +306,7 @@ const BlogForm: FC<BlogFormProps> = ({ mode }) => {
         <div className="flex justify-end gap-2">
           <Link
             to={isUpdateMode ? `/blogs/${blog?.id}` : "/account"}
-            className="shadow bg-custom-red hover:bg-custom-red-hover focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto"
+            className="text-center shadow bg-custom-red hover:bg-custom-red-hover focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full md:w-auto"
           >
             Cancel
           </Link>
