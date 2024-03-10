@@ -74,5 +74,5 @@ export const blogApi = createApi({
   reducerPath: "blogApi",
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
-  tagTypes: ["AllBlogs", "UserBlogs", "BlogDetail"],
+  tagTypes: ["AllBlogs", "UserBlogs", "BlogDetail", "FeaturedBlogs"],
 });

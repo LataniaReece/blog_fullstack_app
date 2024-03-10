@@ -13,11 +13,6 @@ function createServer() {
   };
 
   app.use(cors(corsOptions));
-  app.use((req, res, next) => {
-    console.log("Frontend Origin:", process.env.FRONTEND_ORIGIN);
-    console.log("Incoming Request Origin:", req.headers.origin);
-    next();
-  });
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));

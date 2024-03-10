@@ -43,6 +43,7 @@ export const enhancedApi = blogApi.injectEndpoints({
     }),
     getFeaturedBlogs: builder.query<BlogsResponse, void>({
       query: () => ({ url: "/blogs/featured" }),
+      providesTags: ["FeaturedBlogs"],
     }),
     getUsersWithBlogs: builder.query<UsersWithBlogsResponse, void>({
       query: () => ({ url: "/blogs/users-with-blogs" }),
@@ -63,7 +64,7 @@ export const enhancedApi = blogApi.injectEndpoints({
         method: "POST",
         body: newBlogData,
       }),
-      invalidatesTags: ["UserBlogs", "AllBlogs"],
+      invalidatesTags: ["UserBlogs", "AllBlogs", "FeaturedBlogs"],
     }),
     updateBlog: builder.mutation<BlogResponse, UpdateBlogArgs>({
       query: ({ id, formData }) => ({
@@ -75,6 +76,7 @@ export const enhancedApi = blogApi.injectEndpoints({
         "UserBlogs",
         "AllBlogs",
         { type: "BlogDetail", id },
+        "FeaturedBlogs",
       ],
     }),
     deleteBlog: builder.mutation<{ message: string }, BlogByIdArg>({

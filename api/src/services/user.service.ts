@@ -9,7 +9,16 @@ interface UserCreateInput {
 }
 
 export const createUser = async ({ username, password }: UserCreateInput) => {
-  const existingUser = await prisma.user.findUnique({ where: { username } });
+  const lowercaseUsername = username.toLowerCase();
+
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      username: {
+        equals: lowercaseUsername,
+        mode: "insensitive",
+      },
+    },
+  });
 
   if (existingUser) {
     throw new CustomError("User already exists.", 400);
@@ -19,7 +28,7 @@ export const createUser = async ({ username, password }: UserCreateInput) => {
 
   const user = await prisma.user.create({
     data: {
-      username,
+      username: lowercaseUsername,
       password: hashedPassword,
     },
     select: {
@@ -40,8 +49,10 @@ export const createUser = async ({ username, password }: UserCreateInput) => {
 };
 
 export const loginUser = async ({ username, password }: UserCreateInput) => {
+  const lowercaseUsername = username.toLowerCase();
+
   const user = await prisma.user.findUnique({
-    where: { username },
+    where: { username: lowercaseUsername },
     select: {
       id: true,
       username: true,
