@@ -173,7 +173,7 @@ const BlogSearch: FC = () => {
           )}
         </div>
         {/* Filters End*/}
-        {isCurrentSearch && (
+        {isCurrentSearch && !isLoading && (
           <>
             <h1 className="text-2xl mt-5 font-semibold">
               {totalBlogs || 0}

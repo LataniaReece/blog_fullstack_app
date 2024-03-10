@@ -39,6 +39,9 @@ const Navbar: FC = () => {
             <img src={logo} className="h-8 w-8 rounded-full" />
             Lifestyle Blogs
           </Link>
+          <Link to="/" className="hover:underline flex items-center gap-2">
+            Home
+          </Link>
           <Link
             to="/blogs/search"
             className="hover:underline flex items-center gap-2"
@@ -116,6 +119,12 @@ const Navbar: FC = () => {
               </button>
             </div>
             <>
+              <button
+                onClick={() => handleLinkClick("/")}
+                className="hover:underline flex items-center gap-2"
+              >
+                Home
+              </button>
               <button
                 onClick={() => handleLinkClick("/blogs/search")}
                 className="hover:underline flex items-center gap-2"
