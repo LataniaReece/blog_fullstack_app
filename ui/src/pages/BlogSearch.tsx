@@ -13,6 +13,7 @@ import {
 } from "../services/blogApi";
 import { categories } from "../utils/constants";
 import Container from "../components/Container";
+import DataLoader from "../components/DataLoader";
 
 const BlogSearch: FC = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const BlogSearch: FC = () => {
 
   const [page, setPage] = useState(1);
   const [keywordInputValue, setKeywordInputValue] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   const getInitialSearchParams = () => {
     if (location.state) {
@@ -89,25 +91,41 @@ const BlogSearch: FC = () => {
     }
   }, [navigate, location.pathname, location.state]);
 
-  const handleCategoryClick = useCallback((category: string) => {
-    setSearchParamsQuery((prev) => ({
-      ...prev,
-      category,
-      authorName: "",
-      keyword: "",
-    }));
-    setKeywordInputValue("");
-  }, []);
+  const handleCategoryClick = useCallback(
+    (category: string) => {
+      const currentCategorySearch = searchParamsQuery.category;
 
-  const handleSelectUser = useCallback((user: string) => {
-    setSearchParamsQuery((prev) => ({
-      ...prev,
-      category: "",
-      authorName: user,
-      keyword: "",
-    }));
-    setKeywordInputValue("");
-  }, []);
+      if (currentCategorySearch !== category) {
+        setIsSearching(true);
+        setSearchParamsQuery((prev) => ({
+          ...prev,
+          category,
+          authorName: "",
+          keyword: "",
+        }));
+        setKeywordInputValue("");
+      }
+    },
+    [searchParamsQuery.category]
+  );
+
+  const handleSelectUser = useCallback(
+    (user: string) => {
+      const currentAuthorSearch = searchParamsQuery.authorName;
+
+      if (currentAuthorSearch !== user) {
+        setIsSearching(true);
+        setSearchParamsQuery((prev) => ({
+          ...prev,
+          category: "",
+          authorName: user,
+          keyword: "",
+        }));
+        setKeywordInputValue("");
+      }
+    },
+    [searchParamsQuery.authorName]
+  );
 
   const clearFilters = () => {
     setSearchParamsQuery({
@@ -117,6 +135,12 @@ const BlogSearch: FC = () => {
     });
     setKeywordInputValue("");
   };
+
+  useEffect(() => {
+    if (!isLoading && !isFetching && data) {
+      setIsSearching(false);
+    }
+  }, [isLoading, isFetching, data]);
 
   const users = usersData?.users.map((user) => user.username);
   const totalBlogs = data?.totalBlogs;
@@ -173,32 +197,38 @@ const BlogSearch: FC = () => {
           )}
         </div>
         {/* Filters End*/}
-        {isCurrentSearch && !isLoading && (
+        {isSearching ? (
+          <DataLoader text="Loading Blogs..." />
+        ) : (
           <>
-            <h1 className="text-2xl mt-5 font-semibold">
-              {totalBlogs || 0}
-              <span className="font-light text-gray-500">
-                &nbsp;Result{totalBlogs == 1 ? "" : "s"} Found:&nbsp;
-              </span>
-            </h1>
-            <p className="capitalize font-light text-gray-500 text-sm">
-              <span className="text-black font-semibold">for</span>&nbsp;
-              {searchParamsQuery.authorName ||
-                searchParamsQuery.category ||
-                searchParamsQuery.keyword}
-            </p>
+            {isCurrentSearch && (
+              <>
+                <h1 className="text-2xl mt-5 font-semibold">
+                  {totalBlogs || 0}
+                  <span className="font-light text-gray-500">
+                    &nbsp;Result{totalBlogs == 1 ? "" : "s"} Found:&nbsp;
+                  </span>
+                </h1>
+                <p className="capitalize font-light text-gray-500 text-sm">
+                  <span className="text-black font-semibold">for</span>&nbsp;
+                  {searchParamsQuery.authorName ||
+                    searchParamsQuery.category ||
+                    searchParamsQuery.keyword}
+                </p>
+              </>
+            )}
+            <div className="mt-5">
+              <BlogList
+                data={data}
+                isLoading={isLoading || usersIsLoading}
+                isFetching={isFetching}
+                isError={isError || usersIsError}
+                page={page}
+                setPage={setPage}
+              />
+            </div>
           </>
         )}
-        <div className="mt-5">
-          <BlogList
-            data={data}
-            isLoading={isLoading || usersIsLoading}
-            isFetching={isFetching}
-            isError={isError || usersIsError}
-            page={page}
-            setPage={setPage}
-          />
-        </div>
       </div>
     </Container>
   );
